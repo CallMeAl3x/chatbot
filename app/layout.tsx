@@ -5,12 +5,31 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { AppSidebar } from "@/app/components/ui/app-sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/app/components/ui/sidebar";
-const inter = Inter({ subsets: ["latin"] });
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { AuthService } from "@/app/services";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const showSidebar = !["/login", "/register"].includes(pathname);
+  const [user, setUser] = useState<any>(null);
+  const authService = AuthService.getInstance();
+
+  useEffect(() => {
+    authService.getUser().then(
+      (res: any) => {
+        setUser(res);
+      },
+      (err: any) => {
+        console.log(err);
+        setUser(null);
+      }
+    );
+  }, []);
+
+  const showSidebar = user && !["/login", "/register"].includes(pathname);
+
   return (
     <html lang="en">
       <body className={inter.className} suppressHydrationWarning>
@@ -18,7 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SidebarProvider>
           {showSidebar && <AppSidebar />}
           <main className="w-screen">
-            <SidebarTrigger />
+            {showSidebar && <SidebarTrigger />}
             {children}
           </main>
         </SidebarProvider>

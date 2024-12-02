@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Navbar from "./components/Navbar";
 import { AuthService } from "./services";
-import Link from "next/link";
+import LandingPage from "./components/LandingPage";
 
 const Home = () => {
   const [user, setUser] = useState<any>(null);
@@ -32,14 +31,7 @@ const Home = () => {
           <h1 className="text-6xl mt-20 w-full flex items-center justify-center font-bold">Welcome {user.name}!</h1>
         </div>
       ) : (
-        <>
-          <h1 className="text-6xl mt-20 w-full flex items-center justify-center font-bold">
-            Welcome to I don't know chatbot
-          </h1>
-          <Link href="/login" className="text-md text-slate-300 hover:text-white bg-black ml-auto mr-auto w-full">
-            Login
-          </Link>
-        </>
+        <LandingPage />
       )}
     </main>
   );
