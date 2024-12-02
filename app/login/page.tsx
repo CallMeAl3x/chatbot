@@ -29,6 +29,7 @@ const LoginPage = () => {
       }
     );
   };
+
   return (
     <div className="h-screen w-full py-10 flex flex-col items-center gap-10">
       <h1 className="text-7xl font-bold w-full text-center py-5 mb-10">Login</h1>

@@ -32,6 +32,10 @@ class AuthService {
   public getUser = async () => {
     return await this.account.get();
   };
+
+  public isAuthenticated = () => {
+    return !!this.account.get();
+  };
 }
 
 export default AuthService;

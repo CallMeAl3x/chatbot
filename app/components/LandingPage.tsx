@@ -6,12 +6,14 @@ export default function LandingPage() {
   return (
     <section className="relative overflow-hidden min-h-screen flex flex-1 flex-col items-center justify-center">
       <div className="mr-auto pt-4 flex justify-between w-screen">
-        <img src="/img/logo_IDK_IA.png" alt="logo" className="h-20 ml-12 w-auto" />
+        <Link href="/login">
+          <img src="/img/logo_IDK_IA.png" alt="logo" className="h-20 ml-12 w-auto" />
+        </Link>
         <Link href="/login">
           <Button className="text-white mr-12 mt-auto mb-auto">Login</Button>
         </Link>
       </div>
-      <div className="mx-auto flex max-w-5xl flex-col items-center mt-auto">
+      <div className="mx-auto flex max-w-5xl flex-col items-center mt-[35vh] mb-auto">
         <div className="z-10 flex flex-col items-center gap-6 text-center">
           <div>
             <h1

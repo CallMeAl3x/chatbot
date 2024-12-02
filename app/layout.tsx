@@ -28,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     );
   }, []);
 
-  const showSidebar = user && !["/login", "/register"].includes(pathname);
+  const showSidebar = user && pathname === "/";
 
   return (
     <html lang="en">
