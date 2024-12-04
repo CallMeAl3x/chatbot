@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { AuthService } from "../services";
 import { AuthType } from "../types";
 import { Form } from "../components";
+import Logo from "../components/Logo";
 
 const RegisterPage = () => {
   const authService = AuthService.getInstance();
@@ -29,33 +30,36 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="h-screen w-full py-10 flex flex-col items-center gap-10">
-      <h1 className="text-7xl font-bold w-full text-center py-5 mb-10">Register</h1>
+    <div className='h-screen w-full py-10 flex flex-col items-center gap-10'>
+      <Logo />
+      <h1 className='text-7xl font-bold w-full text-center py-5 mb-10'>
+        Register
+      </h1>
       <Form
         handleClick={handleClick}
         dataFields={[
           {
             name: "userId",
             type: "text",
-            placeholder: "Username"
+            placeholder: "Username",
           },
           {
             name: "name",
             type: "text",
-            placeholder: "Name"
+            placeholder: "Name",
           },
           {
             name: "email",
             type: "email",
-            placeholder: "Email"
+            placeholder: "Email",
           },
           {
             name: "password",
             type: "password",
-            placeholder: "Password"
-          }
+            placeholder: "Password",
+          },
         ]}
-        btnTitle="Register"
+        btnTitle='Register'
       />
     </div>
   );
