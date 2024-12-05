@@ -1,12 +1,24 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-const Brain3D: React.FC = () => {
+interface Brain3DProps {
+  height?: string;
+  width?: string;
+  className?: string;
+}
+
+const Brain3D: React.FC<Brain3DProps> = ({
+  height = "100vh",
+  width = "100%",
+  className = "",
+}) => {
   const mountRef = useRef<HTMLDivElement>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const brainRef = useRef<THREE.Group | null>(null);
 
   useEffect(() => {
     const currentMount = mountRef.current;
@@ -14,7 +26,7 @@ const Brain3D: React.FC = () => {
 
     // Initialiser la scène
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xadd8e6); // Couleur de fond (bleu clair)
+    scene.background = null; // Couleur de fond (bleu clair)
 
     // Initialiser la caméra
     const camera = new THREE.PerspectiveCamera(
@@ -28,7 +40,7 @@ const Brain3D: React.FC = () => {
     camera.position.x = -5;
 
     // Initialiser le rendu
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
     currentMount.appendChild(renderer.domElement);
 
@@ -41,10 +53,10 @@ const Brain3D: React.FC = () => {
     controls.maxDistance = 20;
 
     // Ajouter de la lumière
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    const ambientLight = new THREE.AmbientLight(0x808080, 0.5);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    const directionalLight = new THREE.DirectionalLight(0x808080, 1);
     directionalLight.position.set(10, 10, 10);
     scene.add(directionalLight);
 
@@ -54,39 +66,36 @@ const Brain3D: React.FC = () => {
       "/assets/brain.glb",
       (gltf) => {
         const object = gltf.scene;
+        brainRef.current = object;
 
         const brainParts = ["Brain_Part_02_BRAIN_TEXTURE_blinn2_0"];
 
         object.traverse((child) => {
           if ((child as THREE.Mesh).isMesh) {
             const mesh = child as THREE.Mesh;
-
             const isBrainParts = brainParts.includes(mesh.name);
-            
             const pointsGeometry = mesh.geometry;
-            
             const pointsMaterial = new THREE.PointsMaterial({
-              color: isBrainParts ? 0xff0000 : 0xffffff,
+              color: isBrainParts ? 0xd9d9d9 : 0xd9d9d9,
               size: 0.001,
               sizeAttenuation: true,
               transparent: true,
               opacity: 0.8,
             });
-            
-            // Créer un système de points
             const points = new THREE.Points(pointsGeometry, pointsMaterial);
             points.position.y = -0.5;
             scene.add(points);
           }
         });
 
-        // scene.add(object);
+        setIsLoading(false);
       },
       (xhr) => {
         console.log(`Chargement : ${(xhr.loaded / xhr.total) * 100}% terminé`);
       },
       (error) => {
         console.error("Erreur lors du chargement du modèle :", error);
+        setIsLoading(false);
       }
     );
 
@@ -105,9 +114,15 @@ const Brain3D: React.FC = () => {
       currentMount.removeChild(renderer.domElement);
       controls.dispose();
     };
-  }, []);
+  }, [isLoading]);
 
-  return <div ref={mountRef} style={{ width: "100%", height: "100vh" }} />;
+  return (
+    <div
+      ref={mountRef}
+      style={{ width: width, height: height }}
+      className={className}
+    />
+  );
 };
 
 export default Brain3D;

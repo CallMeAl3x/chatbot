@@ -1,11 +1,8 @@
 export const initialSidebarItems = [
   { title: "Chat", url: "/home", icon: "MessageCircle" },
   { title: "Santé", url: "/sante", icon: "Newspaper" },
-  { title: "Informatique", url: "/informatique", icon: "Newspaper" },
-  { title: "Langues", url: "/langues", icon: "Newspaper" },
   { title: "Notre équipe", url: "/equipe", icon: "Tag" },
   { title: "FeedBack", url: "/feedback", icon: "MessageCircle" },
-  { title: "Cerveau", url: "/cerveau", icon: "Brain" }
 ];
 
 export function addItem(newItem: {

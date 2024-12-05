@@ -51,8 +51,8 @@ export async function AppSidebar({ pages }: SidebarProps) {
   const username = session?.user?.name;
 
   return (
-    <Sidebar>
-      <SidebarContent>
+    <Sidebar className="">
+      <SidebarContent className="">
         <SidebarGroup>
           <div className="flex justify-between w-full items-center mt-1.5 z-[999]">
             <SidebarGroupLabel>
