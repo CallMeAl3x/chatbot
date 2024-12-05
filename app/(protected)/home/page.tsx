@@ -5,6 +5,7 @@ import { FileDropzone } from "@/app/components/ui/file-dropzone";
 import { SimpleFileUpload } from "@/app/components/ui/file-upload";
 import { UploadedFileItem } from "@/app/components/ui/uploaded-file-item";
 import { chatService } from "@/lib/chat-service";
+import { ThumbsDown, ThumbsUp } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function HomePage() {
@@ -17,6 +18,15 @@ export default function HomePage() {
   const [isInitialConversation, setIsInitialConversation] =
     useState<boolean>(true);
   const [opacityDiv, setOpacityDiv] = useState<boolean>(false);
+  const [selectedIcons, setSelectedIcons] = useState<(string | null)[]>([]);
+
+  const handleIconClick = (index: number, iconType: string) => {
+    setSelectedIcons((prevIcons) => {
+      const newIcons = [...prevIcons];
+      newIcons[index] = newIcons[index] === iconType ? null : iconType;
+      return newIcons;
+    });
+  };
 
   const handleFileHover = (isHovering: boolean) => {
     setOpacityDiv(isHovering);
@@ -25,8 +35,6 @@ export default function HomePage() {
   const handleFileUpload = (files: File[]) => {
     setUploadedFiles((prevFiles) => [...prevFiles, ...files]);
   };
-
-  console.log("loading", loading);
 
   const handleRemoveFile = (fileToRemove: File) => {
     setUploadedFiles((prevFiles) =>
@@ -133,12 +141,12 @@ export default function HomePage() {
 
       <Brain3D width="160px" height="160px" className="fixed top-4 right-4" />
 
-      <div className="mx-auto p-3 bg-white rounded-lg shadow-lg h-[95%] flex flex-col">
+      <div className="mx-auto p-3 bg-white rounded-lg shadow-lg h-[95.5%] flex flex-col">
         <ul className="space-y-4 mb-6 flex-1 overflow-auto">
           {messages.map((message, index) => (
             <li
               key={index}
-              className={`p-4 rounded-lg w-fit max-w-[80%] min-w-24 ${
+              className={`p-4 rounded-lg w-fit max-w-[80%] min-w-24 relative ${
                 message.sender === "user"
                   ? "bg-blue-100 text-right ml-auto pr-4"
                   : "bg-gray-100 text-left pl-4"
@@ -150,6 +158,29 @@ export default function HomePage() {
                 {message.sender === "user" ? "Vous" : "Assistant"}:
               </strong>
               <p className="mt-1 text-sm">{message.content}</p>
+              <div
+                className={`absolute top-[85%] ${
+                  message.sender === "user"
+                    ? "left-[-15%]"
+                    : "left-[88%] flex-row-reverse"
+                } flex gap-1`}>
+                <ThumbsUp
+                  className={`cursor-pointer h-6 w-6 ${
+                    selectedIcons[index] === "like"
+                      ? "text-blue-500"
+                      : "text-gray-500"
+                  } hover:text-blue-500`}
+                  onClick={() => handleIconClick(index, "like")}
+                />
+                <ThumbsDown
+                  className={`cursor-pointer h-6 w-6 ${
+                    selectedIcons[index] === "dislike"
+                      ? "text-red-500"
+                      : "text-gray-500"
+                  } hover:text-red-500`}
+                  onClick={() => handleIconClick(index, "dislike")}
+                />
+              </div>
             </li>
           ))}
         </ul>

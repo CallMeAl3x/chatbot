@@ -4,6 +4,7 @@ import { FileDropzone } from "@/app/components/ui/file-dropzone";
 import { SimpleFileUpload } from "@/app/components/ui/file-upload";
 import { UploadedFileItem } from "@/app/components/ui/uploaded-file-item";
 import { chatService } from "@/lib/chat-service";
+import { ThumbsDown, ThumbsUp } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function DynamicPage({ params }: { params: { title: string } }) {
@@ -14,6 +15,15 @@ export default function DynamicPage({ params }: { params: { title: string } }) {
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [opacityDiv, setOpacityDiv] = useState<boolean>(false);
+  const [selectedIcons, setSelectedIcons] = useState<(string | null)[]>([]);
+
+  const handleIconClick = (index: number, iconType: string) => {
+    setSelectedIcons((prevIcons) => {
+      const newIcons = [...prevIcons];
+      newIcons[index] = newIcons[index] === iconType ? null : iconType;
+      return newIcons;
+    });
+  };
 
   const handleFileHover = (isHovering: boolean) => {
     setOpacityDiv(isHovering);
@@ -133,10 +143,10 @@ export default function DynamicPage({ params }: { params: { title: string } }) {
           {messages.map((message, index) => (
             <li
               key={index}
-              className={`p-4 rounded-lg ${
+              className={`p-4 rounded-lg w-fit max-w-[80%] min-w-24 relative ${
                 message.sender === "user"
-                  ? "bg-blue-100 text-right"
-                  : "bg-gray-100 text-left max-w-[85%]"
+                  ? "bg-blue-100 text-right ml-auto pr-4"
+                  : "bg-gray-100 text-left pl-4"
               }`}>
               <strong
                 className={`font-semibold ${
@@ -145,6 +155,27 @@ export default function DynamicPage({ params }: { params: { title: string } }) {
                 {message.sender === "user" ? "Vous" : "Assistant"}:
               </strong>
               <p className="mt-1 text-sm">{message.content}</p>
+              <div
+                className={`absolute top-[85%] ${
+                  message.sender === "user" ? "left-[-15%]" : "left-[88%]"
+                } flex gap-1`}>
+                <ThumbsUp
+                  className={`cursor-pointer h-6 w-6 ${
+                    selectedIcons[index] === "like"
+                      ? "text-blue-500"
+                      : "text-gray-500"
+                  } hover:text-blue-500`}
+                  onClick={() => handleIconClick(index, "like")}
+                />
+                <ThumbsDown
+                  className={`cursor-pointer h-6 w-6 ${
+                    selectedIcons[index] === "dislike"
+                      ? "text-red-500"
+                      : "text-gray-500"
+                  } hover:text-red-500`}
+                  onClick={() => handleIconClick(index, "dislike")}
+                />
+              </div>
             </li>
           ))}
         </ul>
