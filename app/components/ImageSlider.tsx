@@ -57,7 +57,7 @@ const ImageSlider = ({
               alt={`Slide ${index + 1}`}
               className='w-full h-full object-cover rounded-xl opacity-80 transition-opacity duration-300 hover:opacity-50'
             />
-            <div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 opacity-0 transition-opacity ease-in duration-250 hover:opacity-100'>
+            <div className='absolute inset-0 w-full px-30 flex flex-col justify-center text-center bg-black bg-opacity-60 opacity-0 transition-opacity ease-in duration-250 hover:opacity-100'>
               <p className='text-white text-lg font-bold'>{image.caption}</p>
             </div>
           </div>
