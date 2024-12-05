@@ -10,14 +10,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarTrigger
-} from "@/app/components/ui/sidebar";
-import { Button } from "./button";
+} from "./sidebar";
 import { Tooltip } from "@radix-ui/react-tooltip";
-import { useEffect, useState, type FC } from "react";
-import { useRouter } from "next/navigation";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { AuthService } from "@/app/services";
+import Logout from "../logout";
 
 // Menu items.
 const items = [
@@ -64,39 +59,6 @@ const items = [
 ];
 
 export function AppSidebar() {
-  const [user, setUser] = useState<any>(null);
-  const authService = AuthService.getInstance();
-
-  useEffect(() => {
-    authService
-      .getUser()
-      .then((res: any) => {
-        setUser(res);
-        (err: any) => {
-          console.log(err);
-          setUser(null);
-        };
-      })
-      .catch((err: any) => {
-        console.log(err);
-        setUser(null);
-      });
-  }, []);
-  const router = useRouter();
-
-  const onLogout = () => {
-    authService.logoutUser().then(
-      (res: any) => {
-        console.log(res);
-        setUser(null);
-        toast.success("Logout successfull!!");
-        router.push("/login");
-      },
-      (err: any) => {
-        console.log(err);
-      }
-    );
-  };
   return (
     <Sidebar>
       <SidebarContent>
@@ -108,7 +70,6 @@ export function AppSidebar() {
                 <Settings height={16} width={16} className="ml-20" /> {/* Icône d'engrenage */}
               </a>
             </SidebarGroupLabel>
-            <SidebarTrigger />
           </div>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -124,12 +85,7 @@ export function AppSidebar() {
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
-          <Button
-            onClick={onLogout} // Appelle la fonction de déconnexion
-            className="bg-red-600 text-white mb-2 mt-auto"
-          >
-            Déconnexion
-          </Button>
+          <Logout />
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>

@@ -1,44 +1,31 @@
-"use client";
+import { cn } from "@/lib/utils";
+import { Poppins } from "next/font/google";
+import { LoginButton } from "./components/auth/login-button";
+import { Button } from "./components/ui/button";
+import { AppSidebar } from "./components/ui/app-sidebar";
 
-import { useEffect, useState } from "react";
-import { AuthService } from "./services";
-import { useRouter } from "next/navigation";
+const font = Poppins({
+  subsets: ["latin"],
+  weight: ["600"]
+});
 
-const Home = () => {
-  const [user, setUser] = useState<any>(null);
-  const authService = AuthService.getInstance();
-  const router = useRouter();
-
-  useEffect(() => {
-    authService
-      .getUser()
-      .then((res: any) => {
-        setUser(res);
-
-        (err: any) => {
-          console.log(err);
-          setUser(null);
-          router.push("/login");
-        };
-      })
-      .catch((err: any) => {
-        console.log(err);
-        router.push("/login");
-        setUser(null);
-      });
-  }, []);
-
+export default function Home() {
   return (
-    <main className='min-h-screen h-screen w-full'>
-      {user && (
-        <div className='w-full flex items-center justify-center'>
-          <h1 className='text-6xl mt-20 w-full flex items-center justify-center font-bold'>
-            Welcome {user.name}!
-          </h1>
+    <>
+      <AppSidebar />
+      <main className="flex h-full flex-col items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400 to-blue-800 w-screen">
+        <div className="space-y-6 text-center">
+          <h1 className={cn("text-6xl font-semibold text-white drop-shadow-md", font.className)}>IDK Chatbot</h1>
+          <p className="text-white text-lg">A very simple chatbot</p>
+          <div>
+            <LoginButton>
+              <Button variant="secondary" size="lg" className="mr-2">
+                Sign in
+              </Button>
+            </LoginButton>
+          </div>
         </div>
-      )}
-    </main>
+      </main>
+    </>
   );
-};
-
-export default Home;
+}

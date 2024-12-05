@@ -6,10 +6,10 @@ export default function LandingPage() {
   return (
     <section className="relative overflow-hidden min-h-screen flex flex-1 flex-col items-center justify-center">
       <div className="mr-auto pt-4 flex justify-between w-screen">
-        <Link href="/login">
+        <Link href="/auth/login">
           <img src="/img/logo_IDK_IA.png" alt="logo" className="h-20 ml-12 w-auto" />
         </Link>
-        <Link href="/login">
+        <Link href="/auth/login">
           <Button className="text-white mr-12 mt-auto mb-auto">Login</Button>
         </Link>
       </div>
@@ -31,7 +31,7 @@ export default function LandingPage() {
               état de santé sain. En gros, c'est comme un médecin, mais sans le stéthoscope !
             </p>
           </div>
-          <Link href="/login">
+          <Link href="/auth/login">
             <Button className="text-white">Get Started</Button>
           </Link>
         </div>

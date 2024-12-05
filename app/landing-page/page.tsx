@@ -10,7 +10,7 @@ export default function LandingPage() {
   const images = [
     { src: "/img/sante_mental.webp", caption: "Santé mentale" },
     { src: "/img/sante_physique.webp", caption: "Santé physique" },
-    { src: "/img/sante_medecine.webp", caption: "Santé médicale" },
+    { src: "/img/sante_medecine.webp", caption: "Santé médicale" }
   ];
 
   // Gérer l'événement de scroll
@@ -32,7 +32,7 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <section className='relative overflow-hidden w-full min-h-screen flex flex-col'>
+    <section className="relative overflow-hidden w-full min-h-screen flex flex-col">
       {/* Header */}
       <div
         className={`fixed top-0 left-0 right-0 z-50 flex justify-end items-center w-full mx-auto py-7 px-8 bg-white transition-all duration-300 ${
@@ -40,41 +40,37 @@ export default function LandingPage() {
         }`}
       >
         <Logo />
-        <Link href='/login'>
-          <Button className='text-white mt-auto mb-auto'>Login</Button>
+        <Link href="/auth/login">
+          <Button className="text-white mt-auto mb-auto">Login</Button>
         </Link>
       </div>
 
       {/* Content */}
-      <div className='mx-auto flex max-w-[1200px] flex-col items-center mt-[18vh] px-4 pt-24'>
-        <div className='z-10 flex flex-col items-center gap-10 text-center'>
+      <div className="mx-auto flex max-w-[1200px] flex-col items-center mt-[18vh] px-4 pt-24">
+        <div className="z-10 flex flex-col items-center gap-10 text-center">
           <h1
-            className='text-2xl font-bold lg:text-5xl'
+            className="text-2xl font-bold lg:text-5xl"
             style={{
               background: "linear-gradient(120deg, #5391c1, #876bca)",
               WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
+              WebkitTextFillColor: "transparent"
             }}
           >
             Bienvenue dans I Don't Know AI
           </h1>
-          <p className='lg:text-xl text-black/75 mt-2'>
-            I Don't Know AI est une IA qui permet à l'utilisateur de faire part
-            de sa santé. En gros, c'est comme un médecin, mais sans le
-            stéthoscope !
+          <p className="lg:text-xl text-black/75 mt-2">
+            I Don't Know AI est une IA qui permet à l'utilisateur de faire part de sa santé. En gros, c'est comme un
+            médecin, mais sans le stéthoscope !
           </p>
-          <Link href='/login'>
-            <Button className='text-white'>Get Started</Button>
+          <Link href="/auth/login">
+            <Button className="text-white">Get Started</Button>
           </Link>
         </div>
-        <hr className='border-gray-400 border-t-2 w-1/3 my-32' />
+        <hr className="border-gray-400 border-t-2 w-1/3 my-32" />
       </div>
-      <div className='relative w-full h-[95vh]'>
-        <img
-          src='/img/medecin_image.webp'
-          className='w-full h-full object-cover z-1 blur-sm'
-        />
-        <div className='absolute inset-0 w-full h-full bg-black opacity-70 z-2'>
+      <div className="relative w-full h-[95vh]">
+        <img src="/img/medecin_image.webp" className="w-full h-full object-cover z-1 blur-sm" />
+        <div className="absolute inset-0 w-full h-full bg-black opacity-70 z-2">
           <p>Test</p>
         </div>
       </div>
@@ -83,8 +79,8 @@ export default function LandingPage() {
       <ImageSlider images={images} />
 
       {/* Footer */}
-      <footer className='bg-[#000000]/85 text-white py-4 mt-auto w-full'>
-        <div className='container mx-auto text-center'>
+      <footer className="bg-[#000000]/85 text-white py-4 mt-auto w-full">
+        <div className="container mx-auto text-center">
           <p>&copy; 2024 I don't know. All rights reserved.</p>
         </div>
       </footer>
