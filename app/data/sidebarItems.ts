@@ -1,6 +1,13 @@
 export const initialSidebarItems = [
   { title: "Chat", url: "/home", icon: "MessageCircle" },
-  { title: "Santé", url: "/sante", icon: "Newspaper" },
+  { title: "Santé", url: "/sante", icon: "Activity" },
+  { title: "Santé Mentale", url: "/sante-mental", icon: "Activity" },
+  { title: "Santé Physique", url: "/sante-physique", icon: "Activity" },
+  {
+    title: "Recette de Grand Mère",
+    url: "/recette-de-grand-mere",
+    icon: "BookOpen",
+  },
   { title: "Notre équipe", url: "/equipe", icon: "Tag" },
   { title: "FeedBack", url: "/feedback", icon: "MessageCircle" },
 ];

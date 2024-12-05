@@ -12,14 +12,14 @@ export class ChatError extends Error {
 }
 
 export const chatService = {
-  async sendMessage(message: string): Promise<string> {
+  async sendMessage(message: string, path?: string): Promise<string> {
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ prompt: message })
+        body: JSON.stringify({ prompt: message, path: path }),
       });
 
       if (!response.ok) {
@@ -35,5 +35,5 @@ export const chatService = {
       }
       throw new ChatError("Une erreur inattendue s'est produite");
     }
-  }
+  },
 };
