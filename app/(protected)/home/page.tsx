@@ -36,7 +36,7 @@ export default function HomePage() {
   useEffect(() => {
     const loadMessages = async () => {
       try {
-        const response = await fetch(`/api/messages?pageTitle=${encodeURIComponent(params.title)}`);
+        const response = await fetch(`/api/messages?pageTitle=home`);
         if (response.ok) {
           const data = await response.json();
           if (data.messages && data.messages.length > 0) {

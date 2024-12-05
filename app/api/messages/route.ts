@@ -24,7 +24,7 @@ export async function GET(req: Request) {
       where: {
         userId: user.id,
         page: {
-          title: pageTitle
+          title: pageTitle || undefined
         }
       },
       orderBy: {

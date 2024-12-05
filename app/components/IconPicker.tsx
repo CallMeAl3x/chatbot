@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { icons } from "lucide-react";
+import { icons, LucideIcon } from "lucide-react";
 
 interface IconPickerProps {
   selectedIcon: string;
@@ -11,7 +11,7 @@ interface IconPickerProps {
 export function IconPicker({ selectedIcon, onSelectIcon }: IconPickerProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const IconComponent = icons[selectedIcon];
+  const IconComponent = icons[selectedIcon as keyof typeof icons] as LucideIcon;
 
   return (
     <div className="relative">
@@ -21,7 +21,7 @@ export function IconPicker({ selectedIcon, onSelectIcon }: IconPickerProps) {
       {isOpen && (
         <div className="absolute z-10 mt-1 p-1 bg-white border border-gray-300 rounded-md shadow-lg grid grid-cols-4 gap-1 max-h-40 overflow-y-auto w-36">
           {Object.keys(icons).map((iconName) => {
-            const Icon = icons[iconName];
+            const Icon = icons[selectedIcon as keyof typeof icons] as LucideIcon;
             return (
               <button
                 key={iconName}

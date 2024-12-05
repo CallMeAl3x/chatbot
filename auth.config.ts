@@ -27,5 +27,7 @@ export default {
         return null;
       }
     })
-  ]
+  ],
+
+  trustHost: true, // Ajoute cette option pour approuver tous les hôtes (pour usage local uniquement)
 } satisfies NextAuthConfig;

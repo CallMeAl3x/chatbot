@@ -44,7 +44,7 @@ export async function AppSidebar({ pages }: SidebarProps) {
 
   // Convertir le nom de l'icône en composant
   const getIcon = (iconName: string) => {
-    const LucideIcon = icons[iconName];
+    const LucideIcon = icons[iconName as keyof typeof icons];
     return LucideIcon ? <LucideIcon size={24} /> : null;
   };
 
