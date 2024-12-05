@@ -1,10 +1,10 @@
-
 datasource db {
-  provider  = "postgresql"
-  url  	    = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
+
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 model User {
@@ -15,23 +15,49 @@ model User {
   image         String?
   password      String?
   accounts      Account[]
+  pages         Page[]    // Relation avec les pages personnalisées
+  message Message[]
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String 
-  type               String
-  provider           String
-  providerAccountId  String 
-  refresh_token      String? @db.Text
-  access_token       String? @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String? @db.Text
-  session_state      String?
- 
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   @@unique([provider, providerAccountId])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  content   String
+  sender    String
+  pageId    String
+  userId    String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  page      Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+}
+
+model Page {
+  id        String    @id @default(cuid())
+  title     String
+  url       String
+  icon      String
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages  Message[] // Nouvelle relation
+  createdAt DateTime @default(now())
+  
+  @@unique([userId, url])
 }

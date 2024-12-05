@@ -3,19 +3,40 @@
 import { chatService } from "@/lib/chat-service";
 import { useEffect, useState } from "react";
 
-export default function ChatPage() {
-  const [messages, setMessages] = useState<{ content: string; sender: string }[]>([]);
+export default function DynamicPage({ params }: { params: { title: string } }) {
+  const [messages, setMessages] = useState<{ content: string; sender: string; id?: string }[]>([]);
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    // Message de bienvenue personnalisé selon la page
-    const welcomeMessage = {
-      content: `Bienvenue dans le chat général. Je suis votre assistant virtuel, prêt à vous aider et à répondre à vos questions. Comment puis-je vous assister aujourd'hui ?`,
-      sender: "bot"
+    const loadMessages = async () => {
+      try {
+        const response = await fetch(`/api/messages?pageTitle=${encodeURIComponent(params.title)}`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.messages && data.messages.length > 0) {
+            setMessages(data.messages);
+          } else {
+            // Si aucun message n'existe, afficher le message de bienvenue
+            const welcomeMessage = {
+              content: `Bienvenue dans l'espace "${params.title}". Je suis votre assistant virtuel, prêt à vous aider et à répondre à vos questions. Comment puis-je vous assister aujourd'hui ?`,
+              sender: "bot"
+            };
+            setMessages([welcomeMessage]);
+          }
+        }
+      } catch (error) {
+        console.error("Erreur lors du chargement des messages:", error);
+        // En cas d'erreur, afficher quand même le message de bienvenue
+        const welcomeMessage = {
+          content: `Bienvenue dans l'espace "${params.title}". Je suis votre assistant virtuel, prêt à vous aider et à répondre à vos questions. Comment puis-je vous assister aujourd'hui ?`,
+          sender: "bot"
+        };
+        setMessages([welcomeMessage]);
+      }
     };
-    setMessages([welcomeMessage]);
-  }, []);
+    loadMessages();
+  }, [params.title]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
@@ -33,8 +54,21 @@ export default function ChatPage() {
     try {
       const reply = await chatService.sendMessage(input);
       const botMessage = { content: reply, sender: "bot" };
+
+      await fetch("/api/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          pageTitle: params.title,
+          messages: [userMessage, botMessage]
+        })
+      });
+
       setMessages((prevMessages) => [...prevMessages, botMessage]);
     } catch (error) {
+      console.error("Erreur:", error);
       setMessages((prevMessages) => [...prevMessages, { content: "Une erreur s'est produite.", sender: "bot" }]);
     } finally {
       setLoading(false);
@@ -42,7 +76,7 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="p-3 bg-white rounded-lg h-[96.7%] mx-4 flex flex-col">
+    <div className="mx-auto p-3 bg-white rounded-lg shadow-lg h-[97.5%] flex flex-col">
       <ul className="space-y-4 mb-6 flex-1 overflow-auto">
         {messages.map((message, index) => (
           <li

@@ -10,7 +10,7 @@ const Logout = () => {
       }}
     >
       <div className="flex justify-center">
-        <Button type="submit" className="bg-red-600 text-white mt-6 w-[90%] rounded-lg h-8 mb-4">
+        <Button type="submit" className="bg-red-600 text-white mt-6 w-[90%] rounded-lg h-11 mb-4 font-semibold">
           Sign out
         </Button>
       </div>

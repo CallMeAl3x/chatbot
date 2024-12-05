@@ -41,7 +41,7 @@ export default function Home() {
       >
         <Logo />
         <Link href="/auth/login">
-          <Button className="text-white mt-auto mb-auto">Login</Button>
+          <Button className="text-white mt-auto mb-auto">Get Started</Button>
         </Link>
       </div>
 

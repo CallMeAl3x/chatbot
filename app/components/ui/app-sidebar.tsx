@@ -1,4 +1,4 @@
-import { CalendarCheck, HelpCircle, MessageCircle, Newspaper, Sun, Tag, Settings } from "lucide-react";
+import { Settings } from "lucide-react";
 
 import {
   Sidebar,
@@ -8,86 +8,79 @@ import {
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarTrigger
+  SidebarMenuItem
 } from "./sidebar";
-import { Tooltip } from "@radix-ui/react-tooltip";
 import Logout from "../logout";
+import { auth } from "@/auth";
+import AddSidebarItem from "../AddSidebarItem";
+import { icons } from "lucide-react";
+import RemoveSideBarItem from "../RemoveSideBarItem";
+import { db } from "@/lib/db";
+import Link from "next/link";
+
+interface SidebarProps {
+  pages: {
+    id: string;
+    title: string;
+    url: string;
+    icon: string;
+    userId: string;
+  }[];
+}
 
 // Menu items.
-const items = [
-  {
-    title: "FAQ Générale",
-    url: "#",
-    icon: HelpCircle // Icône pour l'aide ou FAQ
-  },
-  {
-    title: "Support Technique",
-    url: "#",
-    icon: Tooltip // Icône pour le support technique
-  },
-  {
-    title: "Météo",
-    url: "#",
-    icon: Sun // Icône pour la météo
-  },
-  {
-    title: "Actualités",
-    url: "#",
-    icon: Newspaper // Icône pour les actualités
-  },
-  {
-    title: "Réservations",
-    url: "#",
-    icon: CalendarCheck // Icône pour les réservations
-  },
-  {
-    title: "Promotions",
-    url: "#",
-    icon: Tag // Icône pour les promotions
-  },
-  {
-    title: "Compte",
-    url: "#",
-    icon: Settings // Icône pour le compte utilisateur
-  },
-  {
-    title: "Suggestions",
-    url: "#",
-    icon: MessageCircle // Icône pour les suggestions
-  }
-];
+export async function AppSidebar({ pages }: SidebarProps) {
+  const session = await auth();
 
-export function AppSidebar() {
+  // Récupérer uniquement les pages de l'utilisateur connecté
+
+  const user = await db.user.findUnique({
+    where: {
+      email: session?.user?.email ?? undefined
+    }
+  });
+
+  const userPages = pages.filter((page) => page.userId === user?.id);
+
+  // Convertir le nom de l'icône en composant
+  const getIcon = (iconName: string) => {
+    const LucideIcon = icons[iconName];
+    return LucideIcon ? <LucideIcon size={24} /> : null;
+  };
+
+  const username = session?.user?.name;
+
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <div className="flex justify-between w-full items-center mt-1.5">
+          <div className="flex justify-between w-full items-center mt-1.5 z-[999]">
             <SidebarGroupLabel>
-              {/* <p className="text-lg">{username ? username : "Loading..."}</p> */}
+              <p className="text-lg text-black">{username ? username : "Loading..."}</p>
               <a href="/settings">
-                <Settings height={16} width={16} className="ml-20" /> {/* Icône d'engrenage */}
+                <Settings height={16} width={16} className="ml-4" />
               </a>
             </SidebarGroupLabel>
           </div>
-          <SidebarGroupContent>
+          <SidebarGroupContent className="mt-4">
             <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
+              {userPages.map((page) => (
+                <SidebarMenuItem key={page.id}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
+                    <Link href={page.url} className="group/item flex items-center relative">
+                      {getIcon(page.icon)}
+                      <span className="ml-2">{page.title}</span>
+                      <RemoveSideBarItem id={page.id} />
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
-          <Logout />
+          <AddSidebarItem />
         </SidebarGroup>
       </SidebarContent>
+      <Logout />
     </Sidebar>
   );
 }
