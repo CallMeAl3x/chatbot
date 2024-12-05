@@ -10,15 +10,39 @@ export default function Home() {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [isFirstVisit, setIsFirstVisit] = useState(true); // Vérifie si c'est la première visite
-  const [showArrow, setShowArrow] = useState(false);
+  const [showArrowDown, setShowArrowDown] = useState(true);
+  const [showArrowUp, setShowArrowUp] = useState(false);
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const targetRef = useRef<HTMLDivElement | null>(null); // Référence vers l'image cible
 
   const images = [
-    { src: "/img/sante_mental.webp", caption: "Santé mentale" },
+    {
+      src: "/img/sante_mental.webp",
+      caption:
+        "I Don't Know AI propose de nombreuses solutions en ce qui concerne votre santé mental. Elle saura vous conseigner sur les marches à suivre et vous soutiendra tout au long de vos problèmes de santé.",
+    },
     { src: "/img/sante_physique.webp", caption: "Santé physique" },
-    { src: "/img/sante_medecine.webp", caption: "Santé médicale" },
+    { src: "/img/recette_gm.webp", caption: "Santé médicale" },
   ];
+
+  const goToTop = () => {
+    const preventScroll = (e: WheelEvent | TouchEvent) => {
+      setTimeout(() => {
+        e.preventDefault();
+      }, 100);
+    };
+    window.addEventListener("wheel", preventScroll, { passive: false });
+    window.addEventListener("touchmove", preventScroll, { passive: false });
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+    setTimeout(() => {
+      window.removeEventListener("wheel", preventScroll);
+      window.removeEventListener("touchmove", preventScroll);
+    }, 400);
+  };
 
   const goToImage = () => {
     const preventScroll = (e: WheelEvent | TouchEvent) => {
@@ -62,9 +86,11 @@ export default function Home() {
 
       // Affichage de la flèche si l'utilisateur est en haut de la page
       if (window.scrollY < window.innerHeight * 0.25) {
-        setShowArrow(true);
+        setShowArrowDown(true);
+        setShowArrowUp(false);
       } else {
-        setShowArrow(false);
+        setShowArrowUp(false);
+        setShowArrowUp(true);
       }
 
       if (window.scrollY == 0) {
@@ -145,15 +171,20 @@ export default function Home() {
             className='absolute flex flex-row items-center inset-0 w-full h-full pt-1 bg-black opacity-80 z-2'
             style={{
               maskImage: isHovering
-                ? `radial-gradient(circle 150px at ${cursorPosition.x}px ${cursorPosition.y}px, transparent 1%, black)`
+                ? `radial-gradient(circle 250px at ${cursorPosition.x}px ${cursorPosition.y}px, transparent 1%, black)`
                 : undefined,
               WebkitMaskImage: isHovering
-                ? `radial-gradient(circle 150px at ${cursorPosition.x}px ${cursorPosition.y}px, transparent 1%, black)`
+                ? `radial-gradient(circle 250px at ${cursorPosition.x}px ${cursorPosition.y}px, transparent 1%, black)`
                 : undefined,
             }}
           >
             <p className='z-3 text-white text-2xl ml-[5vw] max-w-[50vw]'>
-              Test
+              La santé est très importante à nos yeux et il est de mise de
+              répondre au mieux à nos utilisateurs en ce qui concerne leur
+              santé.
+              <br />
+              <br />I Don't Know AI propose donc différents chats, chacun se
+              focalisant sur une spécialité de la santé...
             </p>
           </div>
         </div>
@@ -162,10 +193,19 @@ export default function Home() {
       </div>
 
       {/* Flèche en bas à droite */}
-      {showArrow && (
+      {showArrowDown && (
         <button
           onClick={goToImage} // Appel de la fonction de défilement
-          className='fixed bottom-4 right-4 p-3 bg-gray-800 text-white rounded-full shadow-lg focus:outline-none'
+          className='fixed bottom-4 right-4 w-12 h-12 bg-gray-800 text-white rounded-full shadow-lg flex items-center justify-center focus:outline-none hover:bg-gray-700 transition-colors'
+        >
+          ↓
+        </button>
+      )}
+
+      {showArrowUp && (
+        <button
+          onClick={goToTop} // Appel de la fonction de défilement
+          className='fixed bottom-4 right-4 w-12 h-12 bg-gray-200 text-gray-800 rounded-full shadow-lg flex items-center justify-center focus:outline-none hover:bg-gray-400 transition-colors'
         >
           ↑
         </button>
