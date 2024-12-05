@@ -20,10 +20,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     }
   });
   return (
-    <SidebarProvider>
+    <SidebarProvider className="">
       <AppSidebar pages={userPages} />
       <main className="w-full h-screen max-h-screen">
-        <SidebarTrigger className="mt-2 ml-2" />
+        <SidebarTrigger className="" />
         {children}
       </main>
     </SidebarProvider>

@@ -117,7 +117,7 @@ export default function DynamicPage({ params }: { params: { title: string } }) {
       `}
       ></div>
 
-      <div className="mx-auto p-3 bg-white rounded-lg shadow-lg h-[97.5%] flex flex-col">
+      <div className="mx-auto p-3 rounded-lg shadow-lg h-[97.5%] flex flex-col">
         <ul className="space-y-4 mb-6 flex-1 overflow-auto">
           {messages.map((message, index) => (
             <li
