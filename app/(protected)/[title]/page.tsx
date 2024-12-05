@@ -1,12 +1,42 @@
 "use client";
 
+import { FileDropzone } from "@/app/components/ui/file-dropzone";
+import { SimpleFileUpload } from "@/app/components/ui/file-upload";
+import { UploadedFileItem } from "@/app/components/ui/uploaded-file-item";
 import { chatService } from "@/lib/chat-service";
 import { useEffect, useState } from "react";
 
 export default function DynamicPage({ params }: { params: { title: string } }) {
   const [messages, setMessages] = useState<{ content: string; sender: string; id?: string }[]>([]);
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [opacityDiv, setOpacityDiv] = useState<boolean>(false);
+
+  const handleFileHover = (isHovering: boolean) => {
+    setOpacityDiv(isHovering);
+  };
+
+  const handleFileUpload = (files: File[]) => {
+    setUploadedFiles((prevFiles) => [...prevFiles, ...files]);
+  };
+
+  const handleRemoveFile = (fileToRemove: File) => {
+    setUploadedFiles((prevFiles) => prevFiles.filter((file) => file !== fileToRemove));
+  };
+
+  const formatFileSize = (size: number) => {
+    const units = ["B", "KB", "MB", "GB", "TB"];
+    let unitIndex = 0;
+    let fileSize = size;
+
+    while (fileSize >= 1024 && unitIndex < units.length - 1) {
+      fileSize /= 1024;
+      unitIndex++;
+    }
+
+    return `${fileSize.toFixed(2)} ${units[unitIndex]}`;
+  };
 
   useEffect(() => {
     const loadMessages = async () => {
@@ -50,6 +80,7 @@ export default function DynamicPage({ params }: { params: { title: string } }) {
     setMessages((prevMessages) => [...prevMessages, userMessage]);
     setInput("");
     setLoading(true);
+    setUploadedFiles([]);
 
     try {
       const reply = await chatService.sendMessage(input);
@@ -76,40 +107,70 @@ export default function DynamicPage({ params }: { params: { title: string } }) {
   };
 
   return (
-    <div className="mx-auto p-3 bg-white rounded-lg shadow-lg h-[97.5%] flex flex-col">
-      <ul className="space-y-4 mb-6 flex-1 overflow-auto">
-        {messages.map((message, index) => (
-          <li
-            key={index}
-            className={`p-4 rounded-lg ${
-              message.sender === "user" ? "bg-blue-100 text-right" : "bg-gray-100 text-left"
-            }`}
-          >
-            <strong className={`font-semibold ${message.sender === "user" ? "text-blue-600" : "text-gray-600"}`}>
-              {message.sender === "user" ? "Vous" : "Assistant"}:
-            </strong>
-            <p className="mt-1 text-sm">{message.content}</p>
-          </li>
-        ))}
-      </ul>
+    <FileDropzone onDrop={handleFileUpload} onFileHover={handleFileHover} className="h-full relative">
+      <div
+        className={`
+        absolute top-0 left-0 right-0 bottom-0 
+        bg-black w-full h-full 
+        transition-opacity duration-300 ease-in-out
+        ${opacityDiv ? "opacity-50" : "opacity-0 pointer-events-none"}
+      `}
+      ></div>
 
-      <form onSubmit={handleSubmit} className="flex items-center gap-4 mt-auto">
-        <input
-          type="text"
-          value={input}
-          onChange={handleInputChange}
-          placeholder="Tapez votre message..."
-          className="flex-1 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          disabled={loading} // Désactive le champ pendant le chargement
-        />
-        <button
-          type="submit"
-          disabled={loading}
-          className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow-sm disabled:bg-blue-400"
-        >
-          {loading ? "Envoi..." : "Envoyer"}
-        </button>
-      </form>
-    </div>
+      <div className="mx-auto p-3 bg-white rounded-lg shadow-lg h-[97.5%] flex flex-col">
+        <ul className="space-y-4 mb-6 flex-1 overflow-auto">
+          {messages.map((message, index) => (
+            <li
+              key={index}
+              className={`p-4 rounded-lg ${
+                message.sender === "user" ? "bg-blue-100 text-right" : "bg-gray-100 text-left"
+              }`}
+            >
+              <strong className={`font-semibold ${message.sender === "user" ? "text-blue-600" : "text-gray-600"}`}>
+                {message.sender === "user" ? "Vous" : "Assistant"}:
+              </strong>
+              <p className="mt-1 text-sm">{message.content}</p>
+            </li>
+          ))}
+        </ul>
+
+        <div className="flex w-full flex-col">
+          {uploadedFiles.length > 0 && (
+            <div className="mb-4">
+              <ul>
+                {uploadedFiles.map((file, index) => (
+                  <UploadedFileItem
+                    key={index}
+                    file={file}
+                    fileSize={formatFileSize(file.size)}
+                    onRemove={handleRemoveFile} // Passer la fonction de suppression ici
+                  />
+                ))}
+              </ul>
+            </div>
+          )}
+          <div className="flex items-center w-full h-fit mt-auto">
+            <SimpleFileUpload onChange={handleFileUpload} />
+            <form onSubmit={handleSubmit} className="flex items-center gap-4 mt-auto w-full">
+              <input
+                type="text"
+                value={input}
+                onChange={handleInputChange}
+                placeholder="Tapez votre message..."
+                className="flex-1 w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                disabled={loading} // Désactive le champ pendant le chargement
+              />
+              <button
+                type="submit"
+                disabled={loading}
+                className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow-sm disabled:bg-blue-400"
+              >
+                {loading ? "Envoi..." : "Envoyer"}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </FileDropzone>
   );
 }

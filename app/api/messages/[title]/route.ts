@@ -1,7 +1,6 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 
-// app/api/messages/[title]/route.ts
 export async function GET(req: Request, { params }: { params: { title: string } }) {
   const session = await auth();
 

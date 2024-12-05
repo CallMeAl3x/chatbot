@@ -46,21 +46,16 @@ export async function POST(req: Request) {
 
 export async function DELETE(req: Request) {
   try {
-    console.log("DELETE request received");
     const session = await auth();
-    console.log("Session:", session);
 
     if (!session?.user?.email) {
-      console.log("No session found");
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }
 
     const body = await req.json();
-    console.log("Request body:", body);
     const { id } = body;
 
     if (!id) {
-      console.log("No ID provided");
       return NextResponse.json({ error: "Page ID is required" }, { status: 400 });
     }
 
@@ -69,17 +64,13 @@ export async function DELETE(req: Request) {
         id: id
       }
     });
-    console.log("Delete result:", deletedPage);
 
     if (deletedPage.count === 0) {
-      console.log("No page deleted");
       return NextResponse.json({ error: "Page not found or cannot be deleted" }, { status: 404 });
     }
 
-    console.log("Page deleted successfully");
     return NextResponse.json({ message: "Page deleted successfully" }, { status: 200 });
   } catch (error) {
-    console.error("Delete error:", error);
     return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
   }
 }
