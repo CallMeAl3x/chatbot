@@ -11,6 +11,7 @@ export default function HomePage() {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [isInitialConversation, setIsInitialConversation] = useState<boolean>(true);
 
   const handleFileUpload = (files: File[]) => {
     setUploadedFiles((prevFiles) => [...prevFiles, ...files]);
@@ -44,7 +45,7 @@ export default function HomePage() {
           } else {
             // Si aucun message n'existe, afficher le message de bienvenue
             const welcomeMessage = {
-              content: `Bienvenue dans le chat général. Je suis votre assistant virtuel, prêt à vous aider et à répondre à vos questions. Comment puis-je vous assister aujourd'hui ?`,
+              content: `Bienvenue dans le chat général. Je suis votre assistant virtuel, prêt à vous aider et à répondre à vos questions. Comment puis-je vous aider aujourd'hui ?`,
               sender: "bot"
             };
             setMessages([welcomeMessage]);
@@ -54,7 +55,7 @@ export default function HomePage() {
         console.error("Erreur lors du chargement des messages:", error);
         // En cas d'erreur, afficher quand même le message de bienvenue
         const welcomeMessage = {
-          content: `Bienvenue dans le chat général. Je suis votre assistant virtuel, prêt à vous aider et à répondre à vos questions. Comment puis-je vous assister aujourd'hui ?`,
+          content: `Bienvenue dans le chat général. Je suis votre assistant virtuel, prêt à vous aider et à répondre à vos questions. Comment puis-je vous aider aujourd'hui ?`,
           sender: "bot"
         };
         setMessages([welcomeMessage]);
@@ -75,6 +76,7 @@ export default function HomePage() {
     setMessages((prevMessages) => [...prevMessages, userMessage]);
     setInput("");
     setLoading(true);
+    setIsInitialConversation(false);
 
     try {
       const reply = await chatService.sendMessage(input);
@@ -134,9 +136,9 @@ export default function HomePage() {
               </ul>
             </div>
           )}
-          <div className="flex items-center w-full h-fit mt-auto">
+          <div className={`flex items-center w-full h-fit mt-auto ${isInitialConversation ? "justify-center" : ""}`}>
             <SimpleFileUpload onChange={handleFileUpload} />
-            <form onSubmit={handleSubmit} className="flex items-center gap-4 mt-auto w-full">
+            <form onSubmit={handleSubmit} className={`flex items-center gap-4 mt-auto w-full ${isInitialConversation ? "justify-center" : ""}`}>
               <input
                 type="text"
                 value={input}
