@@ -36,7 +36,13 @@ export const Hero = () => {
       <p className='text-xl text-center mt-8 max-w-md text-black'>Votre chatbot IA pour en savoir plus sur votre santé</p>
       </div>
       <div className="flex justify-center mt-8">
-      <button className='bg-black text-white py-3 px-5 rounded-lg font-medium'>Vous connecter</button>
+      <button
+        className="bg-black text-white py-3 px-5 rounded-lg font-medium"
+        onClick={() => (window.location.href = '/dashboard')}
+      >
+        Vous connecter
+      </button>
+
       </div>
 
 
