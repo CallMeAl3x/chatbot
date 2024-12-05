@@ -6,7 +6,7 @@ const Logout = () => {
     <form
       action={async () => {
         "use server";
-        await signOut();
+        await signOut({ redirectTo: "/", redirect: true });
       }}
     >
       <div className="flex justify-center">

@@ -1,6 +1,6 @@
 import { auth, signOut } from "@/auth";
 
-const SettingPage = async () => {
+const HomePage = async () => {
   const session = await auth();
   return (
     <div>
@@ -8,7 +8,7 @@ const SettingPage = async () => {
       <form
         action={async () => {
           "use server";
-          await signOut();
+          await signOut({ redirectTo: "/" });
         }}
       >
         <button type="submit">Sign out</button>
@@ -17,4 +17,4 @@ const SettingPage = async () => {
   );
 };
 
-export default SettingPage;
+export default HomePage;
