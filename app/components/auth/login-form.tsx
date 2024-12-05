@@ -7,10 +7,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { FormError } from "../from-error";
-import { FormSucces } from "../from-succes";
+import { FormError } from "./from-error";
+import { FormSucces } from "./from-succes";
 import { login } from "@/actions/login";
-import { startTransition, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 
 export const LoginForm = () => {
   const [error, setError] = useState<string | undefined>("");
