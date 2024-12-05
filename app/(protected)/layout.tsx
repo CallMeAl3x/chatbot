@@ -12,8 +12,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <SidebarProvider>
           <AppSidebar />
-          <main>
-            <SidebarTrigger className="mt-4" />
+          <main className="w-screen h-screen max-h-screen">
+            <SidebarTrigger className="mt-2 ml-2" />
             {children}
           </main>
         </SidebarProvider>
