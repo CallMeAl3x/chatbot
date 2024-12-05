@@ -7,9 +7,10 @@ const ImageSlider = ({
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const isScrolling = useRef(false);
-  const sliderRef = useRef<HTMLDivElement | null>(null);
 
   const handleScroll = (e: React.WheelEvent<HTMLDivElement>) => {
+    if (!e.shiftKey) return; // L'utilisateur doit maintenir la touche Maj
+
     const isScrollingDown = e.deltaY > 0;
 
     if (isScrolling.current) {
@@ -31,33 +32,32 @@ const ImageSlider = ({
       isScrolling.current = true;
       setTimeout(() => {
         isScrolling.current = false;
-      }, 500);
+      }, 500); // Temps identique à la durée de transition
     }
   };
 
   return (
-    <div className='relative ml-10 mb-20'>
+    <div className='relative ml-10'>
       {/* Slider */}
       <div
-        ref={sliderRef}
         className='flex gap-6 transition-transform duration-500'
         style={{
           transform: `translateX(-${currentIndex * 96}%)`,
         }}
-        onWheel={handleScroll}
+        onWheel={handleScroll} // Ajout du gestionnaire de défilement
       >
         {/* Ajout des images */}
         {images.map((image, index) => (
           <div
             key={index}
-            className='relative w-[95%] h-[83vh] flex-shrink-0 rounded-xl overflow-hidden'
+            className='relative w-[95%] h-[83vh] flex-shrink-0 rounded-xl overflow-hidden bg-slate-800'
           >
             <img
               src={image.src}
               alt={`Slide ${index + 1}`}
-              className='w-full h-full object-cover rounded-xl transition-opacity duration-300 hover:opacity-50'
+              className='w-full h-full object-cover rounded-xl opacity-80 transition-opacity duration-300 hover:opacity-50'
             />
-            <div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 transition-opacity duration-300 hover:opacity-100'>
+            <div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 opacity-0 transition-opacity ease-in duration-250 hover:opacity-100'>
               <p className='text-white text-lg font-bold'>{image.caption}</p>
             </div>
           </div>
