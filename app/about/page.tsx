@@ -20,9 +20,20 @@ export default function Home() {
       src: "/img/sante_mental.webp",
       caption:
         "I Don't Know AI propose de nombreuses solutions en ce qui concerne votre santé mental. Elle saura vous conseigner sur les marches à suivre et vous soutiendra tout au long de vos problèmes de santé.",
+      page: "/sante-mental",
     },
-    { src: "/img/sante_physique.webp", caption: "Santé physique" },
-    { src: "/img/recette_gm.webp", caption: "Santé médicale" },
+    {
+      src: "/img/sante_physique.webp",
+      caption:
+        "Pour un conseil physique et nutritif, demandez à I Don't Know AI dans son chat spécialisé pour vous conseillé au mieux et précisément sur vos besoins.",
+      page: "/sante-physique",
+    },
+    {
+      src: "/img/recette_gm.webp",
+      caption:
+        "Vous souhaitez connaitre de nouvelles solutions vieux de plusieurs générations au moins ? Prenez conseil de nos grands-mères préférées qui nous ont partagées leurs savoirs !",
+      page: "recette-de-grand-mere",
+    },
   ];
 
   const goToTop = () => {
@@ -141,14 +152,14 @@ export default function Home() {
               WebkitTextFillColor: "transparent",
             }}
           >
-            Bienvenue dans I Don't Know AI
+            A propos de I Don't Know AI
           </h1>
           <p className='lg:text-xl text-black/75 max-w-[65vw] font-medium'>
             I Don't Know AI est une IA qui permet à l'utilisateur de faire part
             de sa santé. En gros, c'est comme un médecin, mais sans le
             stéthoscope !
           </p>
-          <Link href='/auth/login'>
+          <Link href='/dashboard'>
             <Button className='text-white'>Get Started</Button>
           </Link>
         </div>

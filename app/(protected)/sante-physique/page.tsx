@@ -161,7 +161,7 @@ export default function SantePhysiquePage() {
                     ? "text-red-600"
                     : "text-gray-600"
                 }`}>
-                {message.sender === "user" ? "Vous" : "Assistant"}:
+                {message.sender === "user" ? "Vous" : "Coach santé et musclé"}:
               </strong>
               <p
                 className={`mt-1 text-sm ${index === 0 ? "text-red-700" : ""}`}>

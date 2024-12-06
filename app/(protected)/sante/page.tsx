@@ -161,7 +161,7 @@ export default function SantePage() {
                     ? "text-red-600"
                     : "text-gray-600"
                 }`}>
-                {message.sender === "user" ? "Vous" : "Assistant"}:
+                {message.sender === "user" ? "Vous" : "Dr. santé"}:
               </strong>
               <p
                 className={`mt-1 text-sm ${index === 0 ? "text-red-700" : ""}`}>

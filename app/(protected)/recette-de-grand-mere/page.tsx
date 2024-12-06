@@ -158,7 +158,7 @@ export default function RecetteDeGrandMere() {
                 className={`font-semibold ${
                   message.sender === "user" ? "text-blue-600" : "text-gray-600"
                 }`}>
-                {message.sender === "user" ? "Vous" : "Assistant"}:
+                {message.sender === "user" ? "Vous" : "Grand-Mère"}:
               </strong>
               <p className="mt-1 text-sm">{message.content}</p>
               <div
