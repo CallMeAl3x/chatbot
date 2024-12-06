@@ -165,6 +165,7 @@ const Sidebar = React.forwardRef<
             } as React.CSSProperties
           }
           side={side}
+          onClick={() => setOpenMobile(false)}
         >
           <div className="flex h-full w-full flex-col">{children}</div>
         </SheetContent>

@@ -1,82 +1,59 @@
-"use client";
+import { auth } from "@/auth";
 
-import React, { useState } from "react";
+const Settings = async () => {
+  const session = await auth();
+  const user = session?.user;
 
-const Settings = () => {
-
-  // État local pour stocker les informations de l'utilisateur
-  const [user, setUser] = useState({
-    firstName: "TODO", // Valeur initiale
-    email: "TODO", // Valeur initiale
-  });
-
-  // Gestion des changements dans les champs de formulaire
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setUser((prev) => ({
-      ...prev,
-      [name]: value, // Met à jour dynamiquement la valeur
-    }));
-  };
-
-  // Gestion de la soumission (simulée ici)
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Informations mises à jour :", user);
-    alert("Les informations ont été mises à jour !");
-  };
+  if (!user) {
+    return <div>Accès non autorisé</div>;
+  }
 
   return (
-    <div style={{ padding: "20px", maxWidth: "400px", margin: "0 auto" }}>
-      <h2>Paramètres utilisateur</h2>
-      <form onSubmit={handleSubmit}>
-        {/* Champ pour le prénom */}
-        <div style={{ marginBottom: "15px" }}>
-          <label htmlFor="firstName" style={{ display: "block", marginBottom: "5px" }}>
-            Prénom :
-          </label>
-          <input
-            type="text"
-            id="firstName"
-            name="firstName"
-            value={user.firstName}
-            onChange={handleChange}
-            style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #ccc" }}
-            required
-          />
-        </div>
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
+          Paramètres utilisateur
+        </h2>
+        <form action="/home" method="POST">
+          <div className="mb-4">
+            <label
+              htmlFor="nom"
+              className="block text-sm font-medium text-gray-700 mb-1">
+              Nom
+            </label>
+            <input
+              type="text"
+              id="nom"
+              name="nom"
+              defaultValue={user.name || ""}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
 
-        {/* Champ pour l'email */}
-        <div style={{ marginBottom: "15px" }}>
-          <label htmlFor="email" style={{ display: "block", marginBottom: "5px" }}>
-            Email :
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={user.email}
-            onChange={handleChange}
-            style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #ccc" }}
-            required
-          />
-        </div>
+          <div className="mb-4">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-1">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              defaultValue={user.email || ""}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
 
-        {/* Bouton de soumission */}
-        <button
-          type="submit"
-          style={{
-            padding: "10px 20px",
-            backgroundColor: "#007BFF",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-          }}
-        >
-          Mettre à jour
-        </button>
-      </form>
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300">
+            Mettre à jour
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
