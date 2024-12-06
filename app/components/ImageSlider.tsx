@@ -1,9 +1,10 @@
 import React, { useState, useRef } from "react";
+import Link from "next/link";
 
 const ImageSlider = ({
   images,
 }: {
-  images: { src: string; caption: string }[]; // Mise à jour du type des images
+  images: { src: string; caption: string; page: string }[]; // Mise à jour du type des images
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const isScrolling = useRef(false);
@@ -57,9 +58,11 @@ const ImageSlider = ({
               alt={`Slide ${index + 1}`}
               className='w-full h-full object-cover rounded-xl opacity-80 transition-opacity duration-300 hover:opacity-50'
             />
-            <div className='absolute inset-0 w-full px-30 flex flex-col justify-center text-center bg-black bg-opacity-60 opacity-0 transition-opacity ease-in duration-250 hover:opacity-100'>
-              <p className='text-white text-lg font-bold'>{image.caption}</p>
-            </div>
+            <Link href={image.page}>
+              <div className='absolute inset-0 w-full px-[14%] flex flex-col justify-center text-center bg-black bg-opacity-60 opacity-0 transition-opacity ease-in duration-250 hover:opacity-100'>
+                <p className='text-white text-lg font-bold'>{image.caption}</p>
+              </div>
+            </Link>
           </div>
         ))}
       </div>
