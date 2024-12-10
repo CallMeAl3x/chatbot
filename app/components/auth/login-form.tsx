@@ -37,7 +37,7 @@ export const LoginForm = () => {
             setSuccess("Login successful");
             setTimeout(() => {
               window.location.href = DEFAULT_LOGIN_REDIRECT;
-            }, 2000); // Redirect after 2 seconds
+            }, 1500); // Redirect after 1.5 seconds
           }
         }
       });
