@@ -3,8 +3,8 @@
 
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import { AppSidebar } from "../ui/app-sidebar";
-import { SidebarProvider } from "../ui/sidebar";
+import { AppSidebar } from "./ui/app-sidebar";
+import { SidebarProvider } from "./ui/sidebar";
 
 export function AuthLayout({ children }: { children: React.ReactNode }) {
   const { data: session } = useSession();

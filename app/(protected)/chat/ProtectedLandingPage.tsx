@@ -1,11 +1,9 @@
 "use client";
-import { usePages } from "@/app/components/hooks/usePages";
 import { MessageSquarePlus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export function ProtectedHomePage() {
-  const { addPage } = usePages();
+export function ProtectedLandingPage() {
   const [title, setTitle] = useState("");
   const router = useRouter();
 
@@ -25,7 +23,6 @@ export function ProtectedHomePage() {
 
       const page = await response.json();
       if (page.id) {
-        addPage(page); // Mise à jour optimiste
         router.push(`/chat/${page.id}`);
       }
     } catch (error) {

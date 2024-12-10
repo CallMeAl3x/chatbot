@@ -33,7 +33,7 @@ export const AppSidebar = () => {
 
   useEffect(() => {
     loadPages();
-  }, []);
+  }, [pathname]);
 
   const loadPages = async () => {
     try {
