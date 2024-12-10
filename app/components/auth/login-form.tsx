@@ -1,16 +1,17 @@
 "use client";
-import * as z from "zod";
-import { CardWrapper } from "./card-wrapper";
+import { login } from "@/actions/login";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { LoginSchema } from "@/schemas";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { Button } from "../ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { CardWrapper } from "./card-wrapper";
 import { FormError } from "./from-error";
 import { FormSucces } from "./from-succes";
-import { login } from "@/actions/login";
-import { useState, useTransition } from "react";
 
 export const LoginForm = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -34,6 +35,9 @@ export const LoginForm = () => {
             setError(data.error);
           } else {
             setSuccess("Login successful");
+            setTimeout(() => {
+              window.location.href = DEFAULT_LOGIN_REDIRECT;
+            }, 2000); // Redirect after 2 seconds
           }
         }
       });

@@ -1,16 +1,21 @@
-import "./globals.css";
+// app/layout.tsx
+import { auth } from "@/auth";
+import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
-import { SidebarProvider } from "./components/ui/sidebar";
+import { AuthLayout } from "./components/layout/AuthLayout";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const session = await auth();
+
   return (
     <html lang="en">
       <body className={inter.className} suppressHydrationWarning>
-        <SidebarProvider>
-          <main className="w-screen">{children}</main>
-        </SidebarProvider>
+        <SessionProvider session={session}>
+          <AuthLayout>{children}</AuthLayout>
+        </SessionProvider>
       </body>
     </html>
   );

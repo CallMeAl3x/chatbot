@@ -1,11 +1,10 @@
 "use server";
 
-import * as z from "zod";
+import { getUserByEmail } from "@/app/data/user";
+import { db } from "@/lib/db/db";
 import { RegisterSchema } from "@/schemas";
 import bycript from "bcryptjs";
-import { db } from "@/lib/db";
-import { getUserByEmail } from "@/app/data/user";
-import { initialSidebarItems } from "@/app/data/sidebarItems";
+import * as z from "zod";
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
   const validatedFields = RegisterSchema.safeParse(values);
@@ -23,31 +22,15 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     return { error: "Email is already in use" };
   }
 
-  try {
-    const user = await db.user.create({
-      data: {
-        name,
-        email,
-        password: hashedPassword
-      }
-    });
-
-    for (const item of initialSidebarItems) {
-      await db.page.create({
-        data: {
-          title: item.title,
-          url: item.url,
-          icon: item.icon,
-          userId: user.id
-        }
-      });
+  await db.user.create({
+    data: {
+      name,
+      email,
+      password: hashedPassword
     }
-    return { success: "User created!" };
-  } catch (error) {
-    if ((error as any).code === "P2002") {
-      return { error: "Email already exists!" };
-    }
+  });
 
-    return { error: `Something went wrong: ${(error as any).message}` };
-  }
+  return {
+    success: "User created !"
+  };
 };

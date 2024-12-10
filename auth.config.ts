@@ -1,9 +1,9 @@
+import bycript from "bcryptjs";
 import type { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import bycript from "bcryptjs";
 
-import { LoginSchema } from "./schemas";
 import { getUserByEmail } from "./app/data/user";
+import { LoginSchema } from "./schemas";
 
 export default {
   providers: [
@@ -29,5 +29,5 @@ export default {
     })
   ],
 
-  trustHost: true, // Ajoute cette option pour approuver tous les hôtes (pour usage local uniquement)
+  trustHost: true // Ajoute cette option pour approuver tous les hôtes (pour usage local uniquement)
 } satisfies NextAuthConfig;

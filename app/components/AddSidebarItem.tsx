@@ -1,37 +1,41 @@
-"use client";
-
+import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { IconPicker } from "./IconPicker";
-import { Plus } from "lucide-react";
 
-export default function AddSidebarItem() {
+interface AddSidebarItemProps {
+  onAdd: () => void;
+}
+
+export default function AddSidebarItem({ onAdd }: AddSidebarItemProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [newItemTitle, setNewItemTitle] = useState("");
-  const [selectedIcon, setSelectedIcon] = useState("MessageCircle");
+  const router = useRouter();
+  const [title, setTitle] = useState("");
+  const [icon, setIcon] = useState("MessageCircle");
+  const [loading, setLoading] = useState(false);
 
-  const handleAddItem = async () => {
-    if (!newItemTitle) return;
+  const handleAdd = async () => {
+    if (!title || loading) return;
+    setLoading(true);
     try {
-      const response = await fetch("/api/sidebar", {
+      const response = await fetch("/api/pages", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          title: newItemTitle,
-          icon: selectedIcon
-        })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, icon })
       });
 
       if (response.ok) {
-        setNewItemTitle("");
-        setSelectedIcon("MessageCircle");
+        const page = await response.json();
+        setTitle("");
+        setIcon("MessageCircle");
         setIsExpanded(false);
-        window.location.reload();
-        window.location.href = newItemTitle.toLowerCase();
+        onAdd();
+        router.push(`/chat/${page.id}`);
       }
     } catch (error) {
       console.error("Erreur lors de l'ajout:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -48,15 +52,20 @@ export default function AddSidebarItem() {
       ) : (
         <div className="px-1 py-2 space-y-2">
           <div className="flex items-center gap-2">
-            <IconPicker selectedIcon={selectedIcon} onSelectIcon={setSelectedIcon} />
+            <IconPicker selectedIcon={icon} onSelectIcon={setIcon} />
             <input
               type="text"
-              value={newItemTitle}
-              onChange={(e) => setNewItemTitle(e.target.value)}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               placeholder="Nom de l'élément"
               className="w-[90%] text-sm px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+              disabled={loading}
             />
-            <button onClick={handleAddItem} className="p-1 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+            <button
+              onClick={handleAdd}
+              className="p-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:bg-blue-300"
+              disabled={loading}
+            >
               <Plus size={18} />
             </button>
           </div>

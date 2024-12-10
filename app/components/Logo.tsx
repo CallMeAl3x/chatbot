@@ -6,8 +6,8 @@ interface LogoProps {
 
 const Logo = ({ href = "/" }: LogoProps) => {
   return (
-    <Link href={href} className='fixed left-10 top-3'>
-      <img src='/img/logo_IDK_IA.png' alt='logo' className='h-[70px] w-auto' />
+    <Link href={href} className="fixed left-10 top-3">
+      <img src="/img/logo_IDK_IA.png" alt="logo" className="h-[70px] w-auto" />
     </Link>
   );
 };

@@ -1,7 +1,5 @@
-"use client";
-
-import { useState } from "react";
 import { icons } from "lucide-react";
+import { useState } from "react";
 
 interface IconPickerProps {
   selectedIcon: string;
@@ -15,9 +13,7 @@ export function IconPicker({ selectedIcon, onSelectIcon }: IconPickerProps) {
 
   return (
     <div className="relative">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="p-1 border border-gray-300 rounded-md hover:bg-gray-100">
+      <button onClick={() => setIsOpen(!isOpen)} className="p-1 border border-gray-300 rounded-md hover:bg-gray-100">
         {IconComponent && <IconComponent size={16} />}
       </button>
       {isOpen && (
@@ -31,7 +27,8 @@ export function IconPicker({ selectedIcon, onSelectIcon }: IconPickerProps) {
                   onSelectIcon(iconName);
                   setIsOpen(false);
                 }}
-                className="p-1 hover:bg-gray-100 rounded-md">
+                className="p-1 hover:bg-gray-100 rounded-md"
+              >
                 <Icon size={16} />
               </button>
             );

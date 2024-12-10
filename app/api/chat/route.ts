@@ -1,69 +1,65 @@
+import { auth } from "@/auth";
+import { db } from "@/lib/db/db";
 import { NextResponse } from "next/server";
-import { LiteralClient } from "@literalai/client";
 import OpenAI from "openai";
 
-const literalAiClient = new LiteralClient();
 const openai = new OpenAI();
 
-literalAiClient.instrumentation.openai();
-
 export async function POST(request: Request) {
-  try {
-    const { prompt, path } = await request.json();
+  const session = await auth();
 
-    if (!prompt) {
-      return NextResponse.json(
-        {
-          error:
-            "Le prompt est vide !",
-        },
-        { status: 400 }
-      );
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+  }
+
+  try {
+    const { prompt, pageId } = await request.json();
+
+    // Vérifie que la page appartient à l'utilisateur
+    const page = await db.page.findUnique({
+      where: {
+        id: pageId,
+        userId: session.user.id
+      }
+    });
+
+    if (!page) {
+      return NextResponse.json({ error: "Page non trouvée" }, { status: 404 });
     }
 
-    let customizedPrompt = prompt;
+    // Sauvegarde le message utilisateur
+    await db.message.create({
+      data: {
+        content: prompt,
+        sender: "user",
+        userId: session.user.id,
+        pageId: pageId
+      }
+    });
 
-  // Vérifie si la requête vient de la route de santé
-  if (path === "sante") {
-    customizedPrompt +=
-      "Tu es un médecin généraliste compétent, prêt à fournir des conseils clairs et fiables sur des sujets de santé généraux. Ton objectif est d'expliquer des concepts médicaux de manière accessible et de guider les utilisateurs vers des actions responsables et des solutions adaptées.";
-  }
+    const completion = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo-0125",
+      messages: [{ role: "user", content: prompt }]
+    });
 
-  if (path === "sante-mental") {
-    customizedPrompt +=
-      "Tu es un psychologue bienveillant, spécialisé dans le soutien mental et émotionnel. Tu aides les utilisateurs à comprendre et à gérer leurs émotions, le stress, l'anxiété ou d'autres préoccupations liées à la santé mentale. Tes réponses sont toujours empathiques et rassurantes.";
-  }
+    const reply = completion.choices[0].message.content;
 
-  if (path === "sante-physique") {
-    customizedPrompt +=
-      "Tu es un coach en santé physique expérimenté, spécialisé dans l'activité physique, la nutrition et les bonnes pratiques pour maintenir ou améliorer la condition physique. Tes conseils sont pratiques et adaptés à des besoins variés, du bien-être quotidien à la performance sportive.";
-  }
+    if (!reply) {
+      return NextResponse.json({ error: "Réponse vide de l'assistant" }, { status: 500 });
+    }
 
-  if (path === "recette-de-grand-mere") {
-    customizedPrompt +=
-      "Tu es une grand-mère chaleureuse et sage, qui partage des recettes traditionnelles à base de plantes pour soigner divers problèmes de santé. Tes conseils sont toujours basés sur des remèdes naturels et des pratiques héritées de longues traditions. Tu aimes aussi rajouté des pointes d'humnour dans tes réponses car tu es toujours joyeuse.";
-  }
+    // Sauvegarde la réponse du bot
+    await db.message.create({
+      data: {
+        content: reply,
+        sender: "bot",
+        userId: session.user.id,
+        pageId: pageId
+      }
+    });
 
-    const response = await literalAiClient
-      .run({ name: "My Assistant" })
-      .wrap(async () => {
-        console.log("customizedPrompt", customizedPrompt);
-        const completion = await openai.chat.completions.create({
-          model: "gpt-4",
-          messages: [{ role: "user", content: customizedPrompt }],
-        });
-
-        return completion.choices[0].message;
-      });
-
-    return NextResponse.json({ reply: response.content });
+    return NextResponse.json({ reply });
   } catch (error) {
-    return NextResponse.json(
-      {
-        error:
-          "Oups ! On dirait que j'ai mis trop de levure dans le code, ça a tout fait planter !",
-      },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Erreur serveur." }, { status: 500 });
   }
 }

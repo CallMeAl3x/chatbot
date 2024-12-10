@@ -52,12 +52,9 @@ model Message {
 model Page {
   id        String    @id @default(cuid())
   title     String
-  url       String
   icon      String
   userId    String
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  messages  Message[] // Nouvelle relation
-  createdAt DateTime @default(now())
-  
-  @@unique([userId, url])
+  messages  Message[]
+  createdAt DateTime  @default(now())
 }
