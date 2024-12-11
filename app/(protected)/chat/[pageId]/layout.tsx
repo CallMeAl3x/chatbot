@@ -2,6 +2,7 @@ import { db } from "@/lib/db/db";
 import { Metadata } from "next";
 
 interface ChatLayoutProps {
+  children: React.ReactNode;
   params: {
     pageId: string;
   };
@@ -27,6 +28,17 @@ export const generateMetadata = async ({ params }: ChatLayoutProps): Promise<Met
   };
 };
 
-export default function ChatLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+export default async function ChatLayout({ children, params }: ChatLayoutProps) {
+  const page = await db.page.findUnique({
+    where: {
+      id: params.pageId
+    }
+  });
+
+  return (
+    <>
+      {/* <h1>{page?.title}</h1> // TODO add header */}
+      {children}
+    </>
+  );
 }

@@ -6,9 +6,9 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import AddSidebarItem from "../AddSidebarItem";
-import Logout from "../logout";
-import RemoveSideBarItem from "../RemoveSideBarItem";
+import Logout from "../auth/logout";
+import AddSidebarItem from "../sidebar/AddSidebarItem";
+import RemoveSideBarItem from "../sidebar/RemoveSideBarItem";
 import {
   Sidebar,
   SidebarContent,

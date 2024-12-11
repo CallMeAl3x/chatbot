@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { ArrowRight, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { IconPicker } from "./IconPicker";
@@ -60,13 +60,14 @@ export default function AddSidebarItem({ onAdd }: AddSidebarItemProps) {
               placeholder="Nom de l'élément"
               className="w-[90%] text-sm px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
               disabled={loading}
+              onKeyDown={(e) => e.key === "Enter" && handleAdd()}
             />
             <button
               onClick={handleAdd}
               className="p-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:bg-blue-300"
               disabled={loading}
             >
-              <Plus size={18} />
+              <ArrowRight size={18} />
             </button>
           </div>
         </div>
