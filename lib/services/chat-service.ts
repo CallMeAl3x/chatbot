@@ -34,6 +34,8 @@ export const chatService = {
       if (!response.ok) {
         if (result.error === "context_length_exceeded") {
           toast.error(result.message);
+        } else if (result.error === "message_limit_exceeded") {
+          toast.error(result.message);
         } else {
           toast.error("Une erreur s'est produite.");
         }

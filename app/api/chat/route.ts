@@ -10,6 +10,8 @@ function countTokens(text: string): number {
   return text.split(/\s+/).length;
 }
 
+const MESSAGE_LIMIT = 20;
+
 const MAX_TOKENS = 3000; // Adjust based on your model's limit
 
 async function buildContext(pageId: string, userId: string, maxTokens: number) {
@@ -58,6 +60,21 @@ export async function POST(request: Request) {
 
     if (!page) {
       return NextResponse.json({ error: "Page non trouvée" }, { status: 404 });
+    }
+
+    // Check message count for the current page
+    const messageCount = await db.message.count({
+      where: { userId: session.user.id }
+    });
+
+    if (messageCount >= MESSAGE_LIMIT) {
+      return NextResponse.json(
+        {
+          error: "message_limit_exceeded",
+          message: "Vous avez atteint la limite de messages pour cette page. Veuillez en supprimer pour continuer."
+        },
+        { status: 400 }
+      );
     }
 
     // Construire le contexte des messages précédents
