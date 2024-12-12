@@ -1,9 +1,9 @@
 import { Message } from "@prisma/client";
-
-// lib/chat.ts
+import { toast } from "sonner";
 type ChatResponse = {
   reply: string;
-  // Ajoutez d'autres champs de réponse si nécessaire
+  error: string;
+  message: string;
 };
 
 export class ChatError extends Error {
@@ -14,27 +14,35 @@ export class ChatError extends Error {
 }
 
 export const chatService = {
-  async sendMessage(message: string, pageId: string): Promise<string> {
+  sendMessage: async (
+    content: string,
+    fileContent: string,
+    pageId: string,
+    fileMetadata?: { name: string; size: number; type: string }
+  ) => {
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ prompt: message, pageId })
+        body: JSON.stringify({ content, fileContent, pageId, fileMetadata })
       });
 
+      const result: ChatResponse = await response.json();
+
       if (!response.ok) {
-        throw new ChatError(`Erreur HTTP: ${response.status}`);
+        if (result.error === "context_length_exceeded") {
+          toast.error(result.message);
+        } else {
+          toast.error("Une erreur s'est produite.");
+        }
+        return;
       }
 
-      const data: ChatResponse = await response.json();
-      return data.reply;
+      return result.reply;
     } catch (error) {
       console.error("Erreur de chat:", error);
-      if (error instanceof ChatError) {
-        throw error;
-      }
       throw new ChatError("Une erreur inattendue s'est produite");
     }
   },

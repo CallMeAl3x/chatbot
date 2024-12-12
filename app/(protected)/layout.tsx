@@ -1,4 +1,5 @@
 import { SidebarTrigger } from "../components/ui/sidebar";
+import { Toaster } from "../components/ui/sonner";
 
 export const metadata = {
   title: "Next.js",
@@ -7,8 +8,9 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <main className="w-full h-screen max-h-screen overflow-hidden bg-gray-50">
-      <SidebarTrigger />
+    <main className="w-full h-screen max-h-screen overflow-hidden bg-gray-50 relative">
+      <Toaster position="top-right" richColors />
+      <SidebarTrigger className="absolute top-3.5 left-2" />
       {children}
     </main>
   );

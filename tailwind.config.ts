@@ -9,6 +9,15 @@ const config: Config = {
   ],
   theme: {
   	extend: {
+      typography: {
+        DEFAULT: {
+          css: {
+            code: {
+              backgroundColor: "var(--tw-prose-pre-code)"
+            }
+          }
+        }
+      },
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
@@ -68,6 +77,5 @@ const config: Config = {
   		}
   	}
   },
-  plugins: [require("tailwindcss-animate")],
-};
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")]};
 export default config;

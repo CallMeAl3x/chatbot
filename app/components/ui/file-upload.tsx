@@ -1,13 +1,26 @@
+import { ACCEPTED_FILE_TYPES, validateFile } from "@/lib/chat/validateFile";
 import { UploadIcon } from "lucide-react";
 import { useRef, useState } from "react";
+import { toast } from "sonner";
 
 export const SimpleFileUpload = ({ onChange }: { onChange?: (files: File[]) => void }) => {
   const [, setFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (newFiles: File[]) => {
-    setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-    onChange && onChange(newFiles);
+    const validFiles = newFiles.filter((file) => {
+      if (validateFile(file)) {
+        return true;
+      } else {
+        toast.error(`${file.name} is not a valid file. Only ${ACCEPTED_FILE_TYPES.join(", ")} files are allowed.`);
+        return false;
+      }
+    });
+
+    if (validFiles.length > 0) {
+      setFiles((prevFiles) => [...prevFiles, ...validFiles]);
+      onChange && onChange(validFiles);
+    }
   };
 
   const handleClick = () => {
@@ -19,7 +32,7 @@ export const SimpleFileUpload = ({ onChange }: { onChange?: (files: File[]) => v
       <input
         ref={fileInputRef}
         type="file"
-        accept=".txt,.pdf,.doc,.docx"
+        accept={ACCEPTED_FILE_TYPES.join(",")}
         multiple
         onChange={(e) => handleFileChange(Array.from(e.target.files || []))}
         className="hidden"
