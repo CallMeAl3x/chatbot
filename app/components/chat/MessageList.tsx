@@ -13,7 +13,7 @@ export function MessageList({ messages }: MessageListProps) {
       {messages.length > 0 &&
         messages.map((message, index) => {
           const isUser = message.sender === "user";
-          const isPending = message.status === "pending";
+          const isPending = (message as Message & { status?: "pending" | "sent" | "error" }).status === "pending"; //escape type safety
 
           return (
             <li

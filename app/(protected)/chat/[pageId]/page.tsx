@@ -10,10 +10,15 @@ import { chatService } from "@/lib/services/chat-service";
 import { Message } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+
 interface Props {
   params: {
     pageId: string;
   };
+}
+
+interface ExtendedMessage extends Message {
+  status: "pending" | "sent" | "error";
 }
 
 export default function DynamicChatPage({ params }: Props) {
@@ -58,15 +63,18 @@ export default function DynamicChatPage({ params }: Props) {
     setLoading(true);
     try {
       // Créer un message temporaire
-      const tempMessage: Message = {
+      const tempMessage: ExtendedMessage = {
         id: Date.now().toString(),
         content: input,
         sender: "user",
         status: "pending",
         createdAt: new Date(),
-        updatedAt: new Date(),
         userId: session?.user?.id || "",
-        pageId: params.pageId
+        pageId: params.pageId,
+        fileContent: "",
+        fileName: null,
+        fileSize: null,
+        fileType: null
       };
 
       // Ajouter le message temporaire à la liste
@@ -113,7 +121,7 @@ export default function DynamicChatPage({ params }: Props) {
         <div className="flex flex-col h-full">
           <div className="flex-1 overflow-y-auto">
             <div className="p-3 mx-8">
-              <MessageList messages={messages} />
+              <MessageList messages={messages as ExtendedMessage[]} />{" "}
             </div>
           </div>
 
