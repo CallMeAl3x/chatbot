@@ -1,4 +1,4 @@
-import bycript from "bcryptjs";
+import bcrypt from "bcryptjs-react";
 import type { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
@@ -18,7 +18,7 @@ export default {
             return null;
           }
 
-          const passwordMatch = await bycript.compare(password, user.password);
+          const passwordMatch = await bcrypt.compare(password, user.password);
 
           if (passwordMatch) {
             return user;
