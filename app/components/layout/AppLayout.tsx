@@ -1,26 +1,29 @@
-// components/layout/AuthLayout.tsx
 "use client";
 
-import { useSession } from "next-auth/react";
-import { usePathname } from "next/navigation";
+import { getSession, useSession } from "next-auth/react";
+import { useEffect } from "react";
 import { AppSidebar } from "../ui/app-sidebar";
 import { SidebarProvider } from "../ui/sidebar";
 
 export function AuthLayout({ children }: { children: React.ReactNode }) {
-  const { data: session } = useSession();
-  const pathname = usePathname();
+  const { status } = useSession();
 
-  const isAuthPage = pathname.startsWith("/auth");
-  const isPublicHome = pathname === "/" && !session;
-  const shouldShowSidebar = !isAuthPage && !isPublicHome && session;
+  const shouldShowSidebar = status === "authenticated";
 
-  if (!shouldShowSidebar) {
-    return <>{children}</>;
-  }
+  useEffect(() => {
+    const handleSessionChange = async () => {
+      await getSession(); // Recheck la session manuellement
+    };
+
+    window.addEventListener("session-changed", handleSessionChange);
+    return () => {
+      window.removeEventListener("session-changed", handleSessionChange);
+    };
+  }, []);
 
   return (
     <SidebarProvider>
-      <AppSidebar />
+      {shouldShowSidebar && <AppSidebar />}
       <main className="w-full h-screen max-h-screen overflow-hidden bg-gray-50">{children}</main>
     </SidebarProvider>
   );
