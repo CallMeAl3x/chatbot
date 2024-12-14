@@ -6,9 +6,6 @@ import { Button } from "../ui/button";
 export default function Logout() {
   const handleLogout = async () => {
     await logout();
-    setTimeout(() => {
-      window.location.href = "/";
-    }, 1250);
   };
 
   return (
