@@ -2,10 +2,18 @@
 
 import { signOut } from "@/auth";
 
-export const handleSignOut = async () => {
+export async function logout() {
   try {
-    await signOut({ redirectTo: "/", redirect: true });
+    await signOut();
+
+    // Utilisation de setTimeout pour ajouter un délai
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    // Redirection côté client
+    if (typeof window !== "undefined") {
+      window.location.href = "/";
+    }
   } catch (error) {
-    throw error;
+    return { error: "Erreur lors de la déconnexion" };
   }
-};
+}

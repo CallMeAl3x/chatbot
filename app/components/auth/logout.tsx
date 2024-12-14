@@ -1,20 +1,19 @@
 "use client";
 
-import { handleSignOut } from "@/actions/logout";
+import { logout } from "@/actions/logout";
 import { Button } from "../ui/button";
 
-const handleLougout = async () => {
-  await handleSignOut();
-  window.dispatchEvent(new Event("session-changed"));
-};
-
 export default function Logout() {
+  const handleLogout = async () => {
+    await logout();
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 1250);
+  };
+
   return (
     <div className="flex justify-center">
-      <Button
-        onClick={() => handleLougout()}
-        className="bg-red-600 text-white mt-6 w-[90%] rounded-lg h-11 mb-4 font-semibold"
-      >
+      <Button onClick={handleLogout} className="bg-red-600 text-white mt-6 w-[90%] rounded-lg h-11 mb-4 font-semibold">
         Sign out
       </Button>
     </div>
