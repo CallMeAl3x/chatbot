@@ -1,9 +1,10 @@
+"use client";
 import { handleSignOut } from "@/actions/logout";
 import { Button } from "../ui/button";
 
 export default function Logout() {
   const handleLogOut = async () => {
-    handleSignOut();
+    await handleSignOut();
     window.dispatchEvent(new Event("session-changed"));
   };
   return (
