@@ -6,9 +6,9 @@ import { AppSidebar } from "../ui/app-sidebar";
 import { SidebarProvider } from "../ui/sidebar";
 
 export function AuthLayout({ children }: { children: React.ReactNode }) {
-  const { status } = useSession();
+  const { data: session, update } = useSession(); // Récupère update pour forcer la mise à jour
 
-  const shouldShowSidebar = status === "authenticated";
+  const shouldShowSidebar = session;
 
   useEffect(() => {
     const handleSessionChange = async () => {
@@ -19,7 +19,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
     return () => {
       window.removeEventListener("session-changed", handleSessionChange);
     };
-  }, []);
+  }, [update]);
 
   return (
     <SidebarProvider>
