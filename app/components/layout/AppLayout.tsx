@@ -1,4 +1,3 @@
-// components/layout/AuthLayout.tsx
 "use client";
 
 import { useSession } from "next-auth/react";
@@ -15,10 +14,6 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
   const isPublicHome = pathname === "/" && !session;
   const shouldShowSidebar = !isAuthPage && !isPublicHome && session;
 
-  if (!shouldShowSidebar) {
-    return <>{children}</>;
-  }
-
   useEffect(() => {
     const handleSessionChange = () => {
       console.log("'session-changed' capturé");
@@ -31,10 +26,13 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  return (
+  // Décidez quoi afficher dans le JSX, mais appelez toujours les hooks
+  return shouldShowSidebar ? (
     <SidebarProvider>
       <AppSidebar />
       <main className="w-full h-screen max-h-screen overflow-hidden bg-gray-50">{children}</main>
     </SidebarProvider>
+  ) : (
+    <>{children}</>
   );
 }
