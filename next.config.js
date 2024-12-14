@@ -1,12 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   env: {
-    NEXT_APPWRITE_PROJECT_ID: process.env.NEXT_APPWRITE_PROJECT_ID,
-    NEXT_APPWRITE_DB_ID: process.env.NEXT_APPWRITE_DB_ID,
-    NEXT_APPWRITE_COLLECTION_ID: process.env.NEXT_APPWRITE_COLLECTION_ID
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    AUTH_SECRET: process.env.AUTH_SECRET,
+    DATABASE_URL: process.env.DATABASE_URL
   },
   eslint: {
-    ignoreDuringBuilds: true, // Disable eslint during build for test
+    ignoreDuringBuilds: true // Disable eslint during build for test
   }
 };
 
