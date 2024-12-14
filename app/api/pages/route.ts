@@ -1,4 +1,3 @@
-"user server";
 import { auth } from "@/auth";
 import { db } from "@/lib/db/db";
 import { NextResponse } from "next/server";
