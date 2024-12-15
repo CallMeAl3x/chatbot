@@ -3,7 +3,9 @@ import { db } from "@/lib/db/db";
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
-const openai = new OpenAI();
+const openai = new OpenAI({
+  apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY
+});
 
 // Simple token counting function
 function countTokens(text: string): number {
