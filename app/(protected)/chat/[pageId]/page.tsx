@@ -118,9 +118,9 @@ export default function DynamicChatPage({ params }: Props) {
   return (
     <div className="h-screen">
       <FileDropzone onDrop={handleFileUpload} className="h-full">
-        <div className="flex flex-col h-full">
-          <div className="flex-1 overflow-y-auto">
-            <div className="p-3 mx-8">
+        <div className="flex flex-col h-full relative">
+          <div className="flex-1 overflow-y-auto relative">
+            <div className="p-3 mx-8 max-h-[calc(100vh-200px)]">
               <MessageList messages={messages as ExtendedMessage[]} />{" "}
             </div>
           </div>
@@ -128,12 +128,7 @@ export default function DynamicChatPage({ params }: Props) {
           {uploadedFiles.length > 0 && (
             <ul className="mx-6 mb-1.5">
               {uploadedFiles.map((file, index) => (
-                <UploadedFileItem
-                  key={index}
-                  file={file}
-                  fileSize={formatFileSize(file.size)}
-                  onRemove={handleRemoveFile}
-                />
+                <UploadedFileItem key={index} file={file} fileSize={formatFileSize(file.size)} onRemove={handleRemoveFile} />
               ))}
             </ul>
           )}

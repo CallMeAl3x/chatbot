@@ -1,5 +1,6 @@
 import { Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useSidebar } from "../ui/sidebar";
 
 interface RemoveSideBarItemProps {
   pageId: string;
@@ -8,6 +9,8 @@ interface RemoveSideBarItemProps {
 
 export default function RemoveSideBarItem({ pageId, onRemove }: RemoveSideBarItemProps) {
   const router = useRouter();
+
+  const { toggleSidebar } = useSidebar();
 
   const handleRemove = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -27,6 +30,7 @@ export default function RemoveSideBarItem({ pageId, onRemove }: RemoveSideBarIte
     } catch (error) {
       console.error("Erreur:", error);
     }
+    toggleSidebar();
   };
 
   return (

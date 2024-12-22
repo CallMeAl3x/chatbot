@@ -1,5 +1,7 @@
+import { Header } from "@/app/components/chat/Header";
 import { db } from "@/lib/db/db";
 import { Metadata } from "next";
+import { Toaster } from "sonner";
 
 interface ChatLayoutProps {
   children: React.ReactNode;
@@ -37,8 +39,11 @@ export default async function ChatLayout({ children, params }: ChatLayoutProps) 
 
   return (
     <>
-      {/* <h1>{page?.title}</h1> // TODO add header */}
-      {children}
+      <Toaster position="top-right" richColors />
+      <div className="w-full h-screen max-h-screen overflow-hidden relative flex flex-col">
+        <Header pageTitle={page?.title || "Chat"} />
+        {children}
+      </div>
     </>
   );
 }
