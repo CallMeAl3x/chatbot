@@ -34,7 +34,6 @@ export function ChatInput({ input, loading, onSubmit, onInputChange, onFileUploa
           textareadivRef.current.style.height = "auto";
         }
         textareadivRef.current.style.height = `${scrollHeight}px`;
-        console.log(scrollHeight);
       }
 
       // if (isMobile) {
