@@ -1,4 +1,3 @@
-"use client";
 import { clsx, type ClassValue } from "clsx";
 import { useCallback, useState } from "react";
 import { toast } from "sonner";

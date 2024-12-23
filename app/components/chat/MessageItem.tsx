@@ -1,3 +1,4 @@
+"use client";
 import { Message } from "@prisma/client";
 import { MessageIcon } from "./MessageIcon";
 import { MessageContent } from "./MessageContent";
