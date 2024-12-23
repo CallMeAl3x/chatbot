@@ -45,7 +45,7 @@ export default async function ChatLayout(props: ChatLayoutProps) {
   return (
     <>
       <Toaster position="top-right" richColors />
-      <div className="w-full lg:h-screen max-h-screen lg:overflow-y-hidden overflow-y-hidden relative flex flex-col">
+      <div className="w-full lg:h-screen max-h-dvh lg:overflow-y-hidden overflow-y-hidden relative flex flex-col">
         <Header pageTitle={page?.title || "Chat"} />
         {children}
       </div>
