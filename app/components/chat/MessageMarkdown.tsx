@@ -15,7 +15,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
   return (
     <div className="contentWrapper relative mt-1 lg:mt-0">
       <ReactMarkdown
-        className="prose prose-blue max-w-none prose-pre:mt-1 inline break-all text-balance"
+        className="prose prose-blue max-w-[95%] ml-auto mr-auto lg:mr-0 lg:max-w-none prose-pre:mt-1 break-words text-pretty"
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeRaw]}
         components={components}

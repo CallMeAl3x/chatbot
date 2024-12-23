@@ -18,15 +18,20 @@ export function MessageItem({ message }: MessageItemProps) {
   const { copyToClipboard, isCopied, isDisabled } = useCopyToClipboard();
 
   const messageClasses = cn(
-    "lg:p-4 rounded-lg flex-grow p-2",
+    "lg:p-4 rounded-lg flex-grow p-4",
     isUser && ["ml-auto lg:max-w-[35%]", isPending ? "bg-gray-100" : "bg-blue-200"],
     !isUser && "bg-gray-200 mr-auto"
   );
 
   return (
     <li className={messageClasses}>
-      <div className="flex items-start w-full relative">
-        <MessageIcon isUser={isUser} />
+      <div className={`flex items-start w-full relative flex-col` + (isUser ? " items-end" : "")}>
+        <div className={`flex gap-1` + (isUser ? " flex-row-reverse" : "")}>
+          <MessageIcon isUser={isUser} />
+          <strong className={`font-semibold ${isUser ? "text-blue-600" : "text-gray-600"}`}>
+            {isUser ? "Vous" : "Assistant"}
+          </strong>
+        </div>
         <MessageContent message={message} isUser={isUser} />
         <CopyButton
           isCopied={isCopied}

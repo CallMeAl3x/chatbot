@@ -119,7 +119,7 @@ export default function DynamicChatPage(props: Props) {
   return (
     <FileDropzone className="flex flex-col relative h-screen" onDrop={handleFileUpload}>
       <div className="flex-auto overflow-y-auto relative mt-16">
-        <div className="lg:p-3 px-0.5 mx-1 lg:mx-8">
+        <div className="lg:p-3 px-0.5 lg:mx-8">
           <MessageList messages={messages as ExtendedMessage[]} />{" "}
         </div>
       </div>

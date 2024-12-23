@@ -10,10 +10,9 @@ interface MessageContentProps {
 
 export function MessageContent({ message, isUser }: MessageContentProps) {
   return (
-    <div className="flex flex-col gap-1 lg:block">
-      <strong className={`font-semibold ${isUser ? "text-blue-600" : "text-gray-600"}`}>{isUser ? "Vous" : "Assistant"}</strong>
+    <div className="flex flex-col gap-1 lg:block overflow-x-hidden w-full">
       <div
-        className={`messageContent text-sm lg:flex flex-col lg:mt-3 lg:overflow-y-auto inline break-all lg:px-2 ${
+        className={`messageContent text-base lg:flex flex-col lg:mt-3 lg:overflow-y-auto ${
           isUser ? "whitespace-pre-wrap lg:max-h-[30vh]" : "lg:max-h-[60vh]"
         }`}
       >

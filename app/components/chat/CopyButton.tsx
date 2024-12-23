@@ -18,7 +18,7 @@ export const CopyButton: React.FC<CopyButtonProps> = ({ isCopied, isDisabled, on
         position === "code"
           ? "top-2 right-2 bg-gray-800 hover:bg-gray-700"
           : position === "bottom-left"
-          ? "top-full left-0"
+          ? "top-full lg:left-0 right-0"
           : position === "bottom-right"
           ? "top-full right-0"
           : ""
