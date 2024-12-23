@@ -3,8 +3,8 @@ import { Message } from "@prisma/client";
 import { MessageIcon } from "./MessageIcon";
 import { MessageContent } from "./MessageContent";
 import { CopyButton } from "./CopyButton";
-import { useCopyToClipboard } from "@/lib/utils";
-import { cn } from "@/lib/utils"; // Assuming you have a className utility
+import { cn } from "@/lib/utils";
+import { useCopyToClipboard } from "@/lib/useCopyToClipboard";
 
 interface MessageItemProps {
   message: Message & {

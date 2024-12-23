@@ -1,7 +1,7 @@
 "use client";
 import { Components } from "react-markdown";
 import { CopyButton } from "./CopyButton";
-import { useCopyToClipboard } from "@/lib/utils";
+import { useCopyToClipboard } from "@/lib/useCopyToClipboard";
 
 export const CodeBlock: Components["code"] = ({ className, children }) => {
   const { copyToClipboard, isCopied, isDisabled } = useCopyToClipboard();
