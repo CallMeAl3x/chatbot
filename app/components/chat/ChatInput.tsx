@@ -64,15 +64,11 @@ export function ChatInput({ input, loading, onSubmit, onInputChange, onFileUploa
 
   const commonTextareaClasses =
     "p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none";
-  const focusedTextareaClasses = "absolute bottom-0 left-0 right-0 z-10 bg-white max-h-[45vh] lg:max-h-[40vh] sm:max-h-[25vh]";
 
   const desktopForm = (
     <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4 pt-2">
-      <div className="relative flex items-end gap-4 mt-2 mx-6 mb-3 justify-center w-full max-w-[1200px] min-w-[300px]">
+      <div className="relative flex items-end gap-4 mt-2 mx-6 mb-3 justify-center w-full max-w-[1200px] min-w-[300px] min-h-[44px]">
         <SimpleFileUpload onChange={onFileUpload} />
-        {isFocused && textareaHeight > 50 && (
-          <div className="relative w-full h-[104px] max-h-[15vh] lg:max-h-[40vh] sm:max-h-[25vh] bg-transparent overflow-x-hidden"></div>
-        )}
         <textarea
           ref={textareaRef}
           value={input}
@@ -87,7 +83,7 @@ export function ChatInput({ input, loading, onSubmit, onInputChange, onFileUploa
           onKeyDown={handleKeyDown}
           onBlur={() => setIsFocused(false)}
           placeholder="Tapez votre message..."
-          className={`flex-1 ${commonTextareaClasses} ${isFocused ? focusedTextareaClasses : "max-h-[8vh]"}`}
+          className={`flex-1 ${commonTextareaClasses} ${"max-h-[30vh]"}`}
           disabled={loading}
           rows={1}
         />
