@@ -12,7 +12,7 @@ export function MessageContent({ message, isUser }: MessageContentProps) {
   return (
     <div className="flex flex-col gap-1 lg:block overflow-x-hidden w-full">
       <div
-        className={`messageContent text-base lg:flex flex-col lg:mt-3 lg:overflow-y-auto ${
+        className={`messageContent text-base lg:flex flex-col lg:mt-3 ${
           isUser ? "whitespace-pre-wrap lg:max-h-[30vh]" : "lg:max-h-[60vh]"
         }`}
       >

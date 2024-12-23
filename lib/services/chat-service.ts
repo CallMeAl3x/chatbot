@@ -1,9 +1,11 @@
 import { Message } from "@prisma/client";
 import { toast } from "sonner";
+import { useAIModelStore } from "../stores/aiModelStore";
 type ChatResponse = {
   reply: string;
   error: string;
   message: string;
+  model: string;
 };
 
 export class ChatError extends Error {
@@ -21,12 +23,13 @@ export const chatService = {
     fileMetadata?: { name: string; size: number; type: string }
   ) => {
     try {
+      const model = useAIModelStore.getState().model;
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ content, fileContent, pageId, fileMetadata })
+        body: JSON.stringify({ content, fileContent, pageId, fileMetadata, model })
       });
 
       const result: ChatResponse = await response.json();
