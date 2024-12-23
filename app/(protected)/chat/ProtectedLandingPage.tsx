@@ -1,8 +1,8 @@
 "use client";
-import {SidebarTrigger} from "@/app/components/ui/sidebar";
-import {MessageSquarePlus} from "lucide-react";
-import {useRouter} from "next/navigation";
-import {useState} from "react";
+import { SidebarTrigger } from "@/app/components/ui/sidebar";
+import { MessageSquarePlus } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export function ProtectedLandingPage() {
   const [title, setTitle] = useState("");
@@ -15,7 +15,7 @@ export function ProtectedLandingPage() {
     try {
       const response = await fetch("/api/pages", {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title: title,
           icon: "MessageCircle"
@@ -42,7 +42,7 @@ export function ProtectedLandingPage() {
           </div>
 
           <form onSubmit={handleCreatePage} className="mt-8 space-y-6">
-            <div className="flex gap-4">
+            <div className="flex gap-4 lg:flex-row flex-col items-center">
               <input
                 type="text"
                 value={title}

@@ -2,7 +2,8 @@ import { auth } from "@/auth";
 import { db } from "@/lib/db/db";
 import { NextResponse } from "next/server";
 
-export async function GET(request: Request, { params }: { params: { pageId: string } }) {
+export async function GET(request: Request, props: { params: Promise<{ pageId: string }> }) {
+  const params = await props.params;
   const session = await auth();
 
   if (!session?.user?.id) {

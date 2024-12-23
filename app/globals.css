@@ -92,3 +92,40 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.prose code::before {
+  display: none;
+}
+
+.prose code::after {
+  display: none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  border-right: 1px solid transparent;
+  background-clip: padding-box;
+  background-color: #0000006b;
+}
+
+.content-wrapper::-webkit-scrollbar-thumb {
+  background-color: #0000006b;
+  border-right: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.content-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+@supports (-moz-appearance: none) {
+  .content-wrapper {
+    scrollbar-width: thin; /* Fine de la barre de défilement */
+    scrollbar-color: #0000006b transparent; /* Couleurs du pouce et de l'arrière-plan */
+  }
+}

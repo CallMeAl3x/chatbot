@@ -20,7 +20,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main className="w-full h-screen max-h-screen overflow-hidden bg-gray-50">{children}</main>
+      <main className="w-full lg:h-screen lg:max-h-screen lg:overflow-hidden bg-gray-50">{children}</main>
     </SidebarProvider>
   );
 }

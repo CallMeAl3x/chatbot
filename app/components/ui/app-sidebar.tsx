@@ -17,7 +17,8 @@ import {
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem
+  SidebarMenuItem,
+  SidebarTrigger
 } from "./sidebar";
 
 export const AppSidebar = () => {
@@ -51,11 +52,12 @@ export const AppSidebar = () => {
       <SidebarContent>
         <SidebarGroup>
           <div className="flex justify-between w-full items-center mt-1.5 z-[999]">
-            <SidebarGroupLabel>
+            <SidebarGroupLabel className="w-full lg:w-auto">
               <p className="text-lg text-black">{session?.user?.name ?? "Loading..."}</p>
               <a href="/settings">
                 <Settings height={16} width={16} className="ml-4" />
               </a>
+              <SidebarTrigger className="lg:hidden ml-auto" />
             </SidebarGroupLabel>
           </div>
           <SidebarGroupContent className="mt-4">

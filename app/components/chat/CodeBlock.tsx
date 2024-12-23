@@ -1,38 +1,10 @@
-import { useCallback, useState } from "react";
+"use client";
 import { Components } from "react-markdown";
-import { toast } from "sonner";
 import { CopyButton } from "./CopyButton";
+import { useCopyToClipboard } from "@/lib/utils";
 
 export const CodeBlock: Components["code"] = ({ className, children }) => {
-  const [isCopied, setIsCopied] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(false);
-
-  const copyToClipboard = useCallback(async () => {
-    if (isDisabled) return;
-
-    // Ensure children is treated as a string
-    const textToCopy = typeof children === "string" ? children : Array.isArray(children) ? children.join("") : "";
-
-    if (!textToCopy) {
-      toast.error("Nothing to copy!");
-      return;
-    }
-
-    try {
-      await navigator.clipboard.writeText(textToCopy);
-      setIsCopied(true);
-      setIsDisabled(true);
-      toast.success("Copied to clipboard!");
-
-      setTimeout(() => {
-        setIsCopied(false);
-        setIsDisabled(false);
-      }, 2000);
-    } catch (err) {
-      console.error("Failed to copy:", err);
-      toast.error("Failed to copy");
-    }
-  }, [children, isDisabled]);
+  const { copyToClipboard, isCopied, isDisabled } = useCopyToClipboard();
 
   if (!className) {
     return (
@@ -44,9 +16,9 @@ export const CodeBlock: Components["code"] = ({ className, children }) => {
 
   return (
     <div className="prose prose-blue max-w-full relative">
-      <CopyButton isCopied={isCopied} isDisabled={isDisabled} onClick={copyToClipboard} />
-      <pre className={`${className} relative pr-6 whitespace-pre-wrap break-words m-0`}>
-        <code className="break-words">{children}</code>
+      <CopyButton isCopied={isCopied} isDisabled={isDisabled} onClick={() => copyToClipboard(children)} position="code" />
+      <pre className={`${className} relative pr-6 whitespace-pre-wrap m-0`}>
+        <code>{children}</code>
       </pre>
     </div>
   );

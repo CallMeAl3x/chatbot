@@ -5,12 +5,13 @@ import { Toaster } from "sonner";
 
 interface ChatLayoutProps {
   children: React.ReactNode;
-  params: {
+  params: Promise<{
     pageId: string;
-  };
+  }>;
 }
 
-export const generateMetadata = async ({ params }: ChatLayoutProps): Promise<Metadata> => {
+export const generateMetadata = async (props: ChatLayoutProps): Promise<Metadata> => {
+  const params = await props.params;
   if (params.pageId) {
     const page = await db.page.findUnique({
       where: {
@@ -30,7 +31,11 @@ export const generateMetadata = async ({ params }: ChatLayoutProps): Promise<Met
   };
 };
 
-export default async function ChatLayout({ children, params }: ChatLayoutProps) {
+export default async function ChatLayout(props: ChatLayoutProps) {
+  const params = await props.params;
+
+  const { children } = props;
+
   const page = await db.page.findUnique({
     where: {
       id: params.pageId
@@ -40,7 +45,7 @@ export default async function ChatLayout({ children, params }: ChatLayoutProps) 
   return (
     <>
       <Toaster position="top-right" richColors />
-      <div className="w-full h-screen max-h-screen overflow-hidden relative flex flex-col">
+      <div className="w-full lg:h-screen max-h-screen lg:overflow-y-hidden overflow-y-hidden relative flex flex-col">
         <Header pageTitle={page?.title || "Chat"} />
         {children}
       </div>

@@ -16,7 +16,7 @@ export function MessageList({ messages }: MessageListProps) {
   }, [messages]);
 
   return (
-    <ul className="space-y-4 overflow-auto">
+    <ul className="space-y-8 lg:overflow-auto max-w-[90%] lg:max-w-[80%] 2xl:max-w-[1100px] ml-auto mr-auto">
       {messages.map((message) => (
         <MessageItem key={message.id} message={message} />
       ))}

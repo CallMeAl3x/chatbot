@@ -9,19 +9,20 @@ import { extractPDFText } from "@/lib/chat/pdf-utils";
 import { chatService } from "@/lib/services/chat-service";
 import { Message } from "@prisma/client";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 
 interface Props {
-  params: {
+  params: Promise<{
     pageId: string;
-  };
+  }>;
 }
 
 interface ExtendedMessage extends Message {
   status: "pending" | "sent" | "error";
 }
 
-export default function DynamicChatPage({ params }: Props) {
+export default function DynamicChatPage(props: Props) {
+  const params = use(props.params);
   const { data: session } = useSession();
   const [pendingMessage, setPendingMessage] = useState<Message | null>(null);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -52,13 +53,14 @@ export default function DynamicChatPage({ params }: Props) {
     loadMessages();
   }, [session, params.pageId]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!input.trim() && uploadedFiles.length === 0) return;
+    setInput("");
 
     setLoading(true);
     try {
@@ -110,37 +112,32 @@ export default function DynamicChatPage({ params }: Props) {
       // Gérer l'erreur et mettre à jour le statut du message
       setMessages((prev) => prev.map((msg) => (msg.id === pendingMessage?.id ? { ...msg, status: "error" } : msg)));
     } finally {
-      setInput("");
       setLoading(false);
     }
   };
 
   return (
-    <div className="h-screen">
-      <FileDropzone onDrop={handleFileUpload} className="h-full">
-        <div className="flex flex-col h-full relative">
-          <div className="flex-1 overflow-y-auto relative">
-            <div className="p-3 mx-8 max-h-[calc(100vh-200px)]">
-              <MessageList messages={messages as ExtendedMessage[]} />{" "}
-            </div>
-          </div>
-
-          {uploadedFiles.length > 0 && (
-            <ul className="mx-6 mb-1.5">
-              {uploadedFiles.map((file, index) => (
-                <UploadedFileItem key={index} file={file} fileSize={formatFileSize(file.size)} onRemove={handleRemoveFile} />
-              ))}
-            </ul>
-          )}
-          <ChatInput
-            input={input}
-            loading={loading}
-            onSubmit={handleSubmit}
-            onInputChange={handleInputChange}
-            onFileUpload={handleFileUpload}
-          />
+    <FileDropzone className="flex flex-col relative h-screen" onDrop={handleFileUpload}>
+      <div className="flex-auto overflow-y-auto relative mt-16">
+        <div className="lg:p-3 px-0.5 mx-1 lg:mx-8">
+          <MessageList messages={messages as ExtendedMessage[]} />{" "}
         </div>
-      </FileDropzone>
-    </div>
+      </div>
+
+      {uploadedFiles.length > 0 && (
+        <ul className="mx-6 mb-1.5">
+          {uploadedFiles.map((file, index) => (
+            <UploadedFileItem key={index} file={file} fileSize={formatFileSize(file.size)} onRemove={handleRemoveFile} />
+          ))}
+        </ul>
+      )}
+      <ChatInput
+        input={input}
+        loading={loading}
+        onSubmit={handleSubmit}
+        onInputChange={handleInputChange}
+        onFileUpload={handleFileUpload}
+      />
+    </FileDropzone>
   );
 }
