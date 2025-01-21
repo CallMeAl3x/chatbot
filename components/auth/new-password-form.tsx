@@ -1,7 +1,6 @@
 "use client";
 import { newPassword } from "@/actions/new-password";
 import { Button } from "@/components/ui/button";
-import { NewPasswordchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
@@ -13,6 +12,7 @@ import { FormError } from "@/components/auth/form-error";
 import { FormSuccess } from "@/components/auth/form-success";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { NewPasswordSchema } from "@/schemas";
 
 export const NewPasswordForm = () => {
   const searchParams = useSearchParams();
@@ -21,8 +21,8 @@ export const NewPasswordForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
-  const form = useForm<z.infer<typeof NewPasswordchema>>({
-    resolver: zodResolver(NewPasswordchema),
+  const form = useForm<z.infer<typeof NewPasswordSchema>>({
+    resolver: zodResolver(NewPasswordSchema),
     defaultValues: {
       password: ""
     }
@@ -32,7 +32,7 @@ export const NewPasswordForm = () => {
     return <div>Invalid token</div>;
   }
 
-  const onSubmit = (values: z.infer<typeof NewPasswordchema>) => {
+  const onSubmit = (values: z.infer<typeof NewPasswordSchema>) => {
     setError("");
     setSuccess("");
 
