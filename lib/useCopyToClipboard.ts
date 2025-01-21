@@ -11,7 +11,7 @@ export function useCopyToClipboard() {
       if (isDisabled) return;
 
       if (!textToCopy) {
-        toast.error("Nothing to copy!");
+        toast.error("Rien à copier!");
         return;
       }
 
@@ -19,7 +19,7 @@ export function useCopyToClipboard() {
         await navigator.clipboard.writeText(textToCopy);
         setIsCopied(true);
         setIsDisabled(true);
-        toast.success("Copied to clipboard!");
+        toast.success("Copier dans le presse-papier !");
 
         setTimeout(() => {
           setIsCopied(false);
@@ -27,7 +27,7 @@ export function useCopyToClipboard() {
         }, 2000);
       } catch (err) {
         console.error("Failed to copy:", err);
-        toast.error("Failed to copy");
+        toast.error("Impossible de copier !");
       }
     },
     [isDisabled]

@@ -1,8 +1,8 @@
 import { auth } from "@/auth";
-import { db } from "@/lib/db/db";
+import { db } from "@/lib/db";
+import Anthropic from "@anthropic-ai/sdk";
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
-import Anthropic from "@anthropic-ai/sdk";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
@@ -164,7 +164,8 @@ export async function POST(request: Request) {
         return NextResponse.json(
           {
             error: "context_length_exceeded",
-            message: "La limite de contexte a été dépassée. Veuillez raccourcir votre message ou réduire la taille des fichiers."
+            message:
+              "La limite de contexte a été dépassée. Veuillez raccourcir votre message ou réduire la taille des fichiers."
           },
           { status: 400 }
         );

@@ -2,7 +2,7 @@
 
 import { signOut } from "@/auth";
 
-export const handleSignOut = async () => {
+export const logout = async () => {
   try {
     await signOut({ redirectTo: "/auth/login", redirect: true });
   } catch (error) {

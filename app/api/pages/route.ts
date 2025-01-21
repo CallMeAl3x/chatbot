@@ -1,11 +1,11 @@
-import { auth } from "@/auth";
-import { db } from "@/lib/db/db";
+import { currentUser } from "@/lib/auth/auth";
+import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-  const session = await auth();
+  const user = await currentUser();
 
-  if (!session?.user?.id) {
+  if (!user?.id) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
 
@@ -16,28 +16,31 @@ export async function POST(request: Request) {
       data: {
         title: title,
         icon: "MessageCircle",
-        userId: session.user.id
+        userId: user.id
       }
     });
 
     return NextResponse.json(page);
   } catch (error) {
+    if (error instanceof Error) {
+      console.log("Error: ", error.stack);
+    }
     console.error("Page error:", error);
     return NextResponse.json({ error: "Erreur lors de la création de la page" }, { status: 500 });
   }
 }
 
 export async function GET() {
-  const session = await auth();
+  const user = await currentUser();
 
-  if (!session?.user?.id) {
+  if (!user?.id) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
 
   try {
     const pages = await db.page.findMany({
       where: {
-        userId: session.user.id
+        userId: user.id
       },
       orderBy: {
         createdAt: "desc"
@@ -52,9 +55,9 @@ export async function GET() {
 }
 
 export async function DELETE(request: Request) {
-  const session = await auth();
+  const user = await currentUser();
 
-  if (!session?.user?.id) {
+  if (!user?.id) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
 
@@ -65,7 +68,7 @@ export async function DELETE(request: Request) {
     const page = await db.page.findUnique({
       where: {
         id: id,
-        userId: session.user.id
+        userId: user.id
       }
     });
 

@@ -1,8 +1,8 @@
 import { auth } from "@/auth";
+import { AuthLayout } from "@/components/layout/AppLayout";
 import { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
-import { AuthLayout } from "./components/layout/AppLayout";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });

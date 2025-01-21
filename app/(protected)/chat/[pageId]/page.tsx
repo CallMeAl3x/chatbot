@@ -1,15 +1,15 @@
 "use client";
 
-import { ChatInput } from "@/app/components/chat/ChatInput";
-import { MessageList } from "@/app/components/chat/MessageList";
-import { FileDropzone } from "@/app/components/ui/file-dropzone";
-import { UploadedFileItem } from "@/app/components/ui/uploaded-file-item";
+import { ChatInput } from "@/components/chat/chat-input";
+import { MessageList } from "@/components/chat/message-list";
+import { FileDropzone } from "@/components/ui/file-dropzone";
+import { UploadedFileItem } from "@/components/ui/uploaded-file-item";
 import { formatFileSize } from "@/lib/chat/format-files-utils";
 import { extractPDFText } from "@/lib/chat/pdf-utils";
 import { chatService } from "@/lib/services/chat-service";
 import { Message } from "@prisma/client";
 import { useSession } from "next-auth/react";
-import { useEffect, useState, use } from "react";
+import { use, useEffect, useState } from "react";
 
 interface Props {
   params: Promise<{
@@ -76,7 +76,8 @@ export default function DynamicChatPage(props: Props) {
         fileContent: "",
         fileName: null,
         fileSize: null,
-        fileType: null
+        fileType: null,
+        updatedAt: new Date()
       };
 
       // Ajouter le message temporaire à la liste
@@ -127,7 +128,12 @@ export default function DynamicChatPage(props: Props) {
       {uploadedFiles.length > 0 && (
         <ul className="mx-6 mb-1.5">
           {uploadedFiles.map((file, index) => (
-            <UploadedFileItem key={index} file={file} fileSize={formatFileSize(file.size)} onRemove={handleRemoveFile} />
+            <UploadedFileItem
+              key={index}
+              file={file}
+              fileSize={formatFileSize(file.size)}
+              onRemove={handleRemoveFile}
+            />
           ))}
         </ul>
       )}

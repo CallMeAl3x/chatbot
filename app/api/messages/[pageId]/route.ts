@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { db } from "@/lib/db/db";
+import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request, props: { params: Promise<{ pageId: string }> }) {

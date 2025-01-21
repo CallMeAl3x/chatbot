@@ -1,5 +1,5 @@
-import { Header } from "@/app/components/chat/Header";
-import { db } from "@/lib/db/db";
+import { Header } from "@/components/chat/header";
+import { db } from "@/lib/db";
 import { Metadata } from "next";
 import { Toaster } from "sonner";
 

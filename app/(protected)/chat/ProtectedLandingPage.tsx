@@ -1,5 +1,6 @@
 "use client";
-import { SidebarTrigger } from "@/app/components/ui/sidebar";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { useCurrentUser } from "@/hooks/use-current-user";
 import { MessageSquarePlus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -7,6 +8,7 @@ import { useState } from "react";
 export function ProtectedLandingPage() {
   const [title, setTitle] = useState("");
   const router = useRouter();
+  const user = useCurrentUser();
 
   const handleCreatePage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,7 +40,9 @@ export function ProtectedLandingPage() {
         <div className="max-w-2xl w-full space-y-8">
           <div className="text-center">
             <h1 className="text-4xl font-bold text-gray-900">Bienvenue sur votre ChatBot</h1>
-            <p className="mt-3 text-lg text-gray-600">Commencez une nouvelle conversation ou créez une page personnalisée</p>
+            <p className="mt-3 text-lg text-gray-600">
+              Commencez une nouvelle conversation ou créez une page personnalisée
+            </p>
           </div>
 
           <form onSubmit={handleCreatePage} className="mt-8 space-y-6">
@@ -63,16 +67,18 @@ export function ProtectedLandingPage() {
           <div className="mt-12">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Suggestions</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {["Assistant personnel", "Aide à la rédaction", "Analyse de données", "Brainstorming"].map((suggestion) => (
-                <button
-                  key={suggestion}
-                  onClick={() => setTitle(suggestion)}
-                  className="p-4 text-left border border-gray-200 rounded-lg hover:bg-gray-50"
-                >
-                  <h3 className="font-medium text-gray-900">{suggestion}</h3>
-                  <p className="text-sm text-gray-500">Commencer une conversation sur ce thème</p>
-                </button>
-              ))}
+              {["Assistant personnel", "Aide à la rédaction", "Analyse de données", "Brainstorming"].map(
+                (suggestion) => (
+                  <button
+                    key={suggestion}
+                    onClick={() => setTitle(suggestion)}
+                    className="p-4 text-left border border-gray-200 rounded-lg hover:bg-gray-50"
+                  >
+                    <h3 className="font-medium text-gray-900">{suggestion}</h3>
+                    <p className="text-sm text-gray-500">Commencer une conversation sur ce thème</p>
+                  </button>
+                )
+              )}
             </div>
           </div>
         </div>

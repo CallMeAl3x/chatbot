@@ -1,8 +1,8 @@
-import { LoginForm } from "@/app/components/auth/login-form";
+import { LoginForm } from "@/components/auth/login-form";
 
 const LoginPage = () => {
   return (
-    <div className="h-screen w-screen flex justify-center items-center">
+    <div className="h-screen flex items-center justify-center">
       <LoginForm />
     </div>
   );

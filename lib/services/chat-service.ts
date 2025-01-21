@@ -1,6 +1,6 @@
+import { useAIModelStore } from "@/lib/stores/aiModelStore";
 import { Message } from "@prisma/client";
 import { toast } from "sonner";
-import { useAIModelStore } from "../stores/aiModelStore";
 type ChatResponse = {
   reply: string;
   error: string;

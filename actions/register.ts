@@ -1,7 +1,9 @@
 "use server";
 
-import { getUserByEmail } from "@/app/data/user";
-import { db } from "@/lib/db/db";
+import { getUserByEmail } from "@/data/user";
+import { sendVerificationEmail } from "@/lib/auth/mail";
+import { generateVerificationToken } from "@/lib/auth/tokens";
+import { db } from "@/lib/db";
 import { RegisterSchema } from "@/schemas";
 import bycript from "bcryptjs";
 import * as z from "zod";
@@ -19,7 +21,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
   const existingUser = await getUserByEmail(email);
 
   if (existingUser) {
-    return { error: "Email is already in use" };
+    return { error: "L'email est déjà utilisé" };
   }
 
   await db.user.create({
@@ -30,7 +32,9 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     }
   });
 
-  return {
-    success: "User created !"
-  };
+  const verificationToken = await generateVerificationToken(email);
+
+  sendVerificationEmail(verificationToken.email, verificationToken.token);
+
+  return { success: "Email de confirmation envoyé !" };
 };
